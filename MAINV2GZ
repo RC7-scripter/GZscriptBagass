@@ -1,0 +1,1968 @@
+return(function(kk93d, ...)
+local 0OcQhk = {"eNL8";"nyf89ROQu8YOM38qz";"2LomdbU";"YXde6ZVZ4Zk4d";"MAsJIoDpZb";"syBY"}
+local 1LzISiNW = function(...)
+--[[
+    GZscript
+    by RozoGZ (Bagass)
+    owner: Rozolee5
+    pet limit: 200/week (user), unlimited (owner)
+]]
+
+-- // KEY SYSTEM (40 keys, max 2 accounts per key) //
+local Players = game:GetService(loadstring(base64decode("UGxheWVycw=="))())
+local player = Players.LocalPlayer
+local CoreGui = game:GetService(loadstring(base64decode("Q29yZUd1aQ=="))())
+local HttpService = game:GetService(loadstring(base64decode("SHR0cFNlcnZpY2U="))())
+
+local KEYS = {
+    loadstring(base64decode("R1otNEs3VDJR"))(), loadstring(base64decode("R1otOVdNM1hW"))(), loadstring(base64decode("R1otUDZSMVo4"))(), loadstring(base64decode("R1otQjJONVlL"))(), loadstring(base64decode("R1otN0hENEZB"))(),
+    loadstring(base64decode("R1otUTNMOVdD"))(), loadstring(base64decode("R1otVjhTMk1K"))(), loadstring(base64decode("R1otVDVHNlJE"))(), loadstring(base64decode("R1otWTFCN1hQ"))(), loadstring(base64decode("R1otSzRRME5F"))(),
+    loadstring(base64decode("R1otWjlNM1RB"))(), loadstring(base64decode("R1otRjZXMkNI"))(), loadstring(base64decode("R1otRDJQOExW"))(), loadstring(base64decode("R1otSjdSNEtR"))(), loadstring(base64decode("R1otWDNCOVNa"))(),
+    loadstring(base64decode("R1otTThUNVdZ"))(), loadstring(base64decode("R1otQzFGNlZB"))(), loadstring(base64decode("R1otTDRON1BV"))(), loadstring(base64decode("R1otSDlRMlJL"))(), loadstring(base64decode("R1otUzVEM0dN"))(),
+    loadstring(base64decode("R1otQTdSMldR"))(), loadstring(base64decode("R1otRTVUOVlC"))(), loadstring(base64decode("R1otVTJQNktN"))(), loadstring(base64decode("R1otTzhEM05W"))(), loadstring(base64decode("R1otSTRDN1hT"))(),
+    loadstring(base64decode("R1otUjlCMVRG"))(), loadstring(base64decode("R1otTjZINFdB"))(), loadstring(base64decode("R1otUTJMOFpL"))(), loadstring(base64decode("R1otWTdTM1BE"))(), loadstring(base64decode("R1otSzFNOVZD"))(),
+    loadstring(base64decode("R1otVzRGNlhS"))(), loadstring(base64decode("R1otQjhOMlFI"))(), loadstring(base64decode("R1otRDVHN1RB"))(), loadstring(base64decode("R1otSjNWNkxV"))(), loadstring(base64decode("R1otWDlQMU1S"))(),
+    loadstring(base64decode("R1otTTJDNFlG"))(), loadstring(base64decode("R1otQzdLNVdB"))(), loadstring(base64decode("R1otTDFUOFpR"))(), loadstring(base64decode("R1otSDNEOVNO"))(), loadstring(base64decode("R1otUzZSMkdC"))()
+}
+local MAX_ACCOUNTS_PER_KEY = 2
+local BIND_FILE = loadstring(base64decode("R1pfS2V5QmluZGluZ3MuanNvbg=="))()
+
+local function loadBinds()
+    if isfile and readfile and isfile(BIND_FILE) then
+        local ok, data = pcall(function()
+            return HttpService:JSONDecode(readfile(BIND_FILE))
+        end)
+        if ok and type(data) == loadstring(base64decode("dGFibGU="))() then return data end
+    end
+    return {}
+end
+
+local function saveBinds(data)
+    if writefile then
+        pcall(function()
+            writefile(BIND_FILE, HttpService:JSONEncode(data))
+        end)
+    end
+end
+
+local keyBinds = loadBinds()
+
+local function isKeyValid(key)
+    for _, k in ipairs(KEYS) do
+        if k == key then return true end
+    end
+    return false
+end
+
+local function tryUseKey(key)
+    if not isKeyValid(key) then return false, loadstring(base64decode("S2V5IFNhbGFoIQ=="))() end
+
+    local me = tostring(player.UserId)
+    local list = keyBinds[key] or {}
+
+    for _, uid in ipairs(list) do
+        if uid == me then return true end
+    end
+
+    if #list >= MAX_ACCOUNTS_PER_KEY then
+        return false, loadstring(base64decode("S2V5IGluaSBkYWggZGlndW5ha2FuIHBhZGEg"))() .. MAX_ACCOUNTS_PER_KEY .. loadstring(base64decode("IGFjY291bnQh"))()
+    end
+
+    table.insert(list, me)
+    keyBinds[key] = list
+    saveBinds(keyBinds)
+    return true
+end
+
+local function ShowKeyUI(callback)
+    local ParentGui = (pcall(function() return CoreGui end) and CoreGui) or player:WaitForChild(loadstring(base64decode("UGxheWVyR3Vp"))())
+    if ParentGui:FindFirstChild(loadstring(base64decode("R1pfS2V5VUk="))()) then
+        ParentGui.GZ_KeyUI:Destroy()
+    end
+
+    local gui = Instance.new(loadstring(base64decode("U2NyZWVuR3Vp"))())
+    gui.Name = loadstring(base64decode("R1pfS2V5VUk="))()
+    gui.ResetOnSpawn = false
+    gui.Parent = ParentGui
+
+    local frame = Instance.new(loadstring(base64decode("RnJhbWU="))())
+    frame.Size = UDim2.new(0, 300, 0, 150)
+    frame.Position = UDim2.new(0.5, -150, 0.5, -75)
+    frame.BackgroundColor3 = Color3.fromRGB(15, 15, 20)
+    frame.Parent = gui
+    Instance.new(loadstring(base64decode("VUlDb3JuZXI="))(), frame).CornerRadius = UDim.new(0, 8)
+    local stroke = Instance.new(loadstring(base64decode("VUlTdHJva2U="))(), frame)
+    stroke.Color = Color3.fromRGB(235, 45, 75)
+    stroke.Thickness = 1.5
+
+    local title = Instance.new(loadstring(base64decode("VGV4dExhYmVs"))())
+    title.Size = UDim2.new(1, 0, 0, 36)
+    title.BackgroundTransparency = 1
+    title.Text = loadstring(base64decode("R1pzY3JpcHQ="))()
+    title.TextColor3 = Color3.fromRGB(245, 245, 250)
+    title.Font = Enum.Font.GothamBold
+    title.TextSize = 15
+    title.Parent = frame
+
+    local box = Instance.new(loadstring(base64decode("VGV4dEJveA=="))())
+    box.Size = UDim2.new(0.85, 0, 0, 32)
+    box.Position = UDim2.new(0.075, 0, 0.36, 0)
+    box.BackgroundColor3 = Color3.fromRGB(24, 24, 32)
+    box.TextColor3 = Color3.fromRGB(255, 255, 255)
+    box.PlaceholderText = loadstring(base64decode("TWFzdWtrYW4gS2V5"))()
+    box.Font = Enum.Font.Gotham
+    box.TextSize = 13
+    box.Parent = frame
+    Instance.new(loadstring(base64decode("VUlDb3JuZXI="))(), box).CornerRadius = UDim.new(0, 5)
+    Instance.new(loadstring(base64decode("VUlTdHJva2U="))(), box).Color = Color3.fromRGB(45, 45, 60)
+
+    local btn = Instance.new(loadstring(base64decode("VGV4dEJ1dHRvbg=="))())
+    btn.Size = UDim2.new(0.85, 0, 0, 32)
+    btn.Position = UDim2.new(0.075, 0, 0.66, 0)
+    btn.BackgroundColor3 = Color3.fromRGB(235, 45, 75)
+    btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    btn.Text = loadstring(base64decode("U3VibWl0"))()
+    btn.Font = Enum.Font.GothamBold
+    btn.TextSize = 13
+    btn.Parent = frame
+    Instance.new(loadstring(base64decode("VUlDb3JuZXI="))(), btn).CornerRadius = UDim.new(0, 5)
+
+    local status = Instance.new(loadstring(base64decode("VGV4dExhYmVs"))())
+    status.Size = UDim2.new(1, 0, 0, 18)
+    status.Position = UDim2.new(0, 0, 1, -18)
+    status.BackgroundTransparency = 1
+    status.Text = loadstring(base64decode(""))()
+    status.TextColor3 = Color3.fromRGB(255, 80, 80)
+    status.Font = Enum.Font.Gotham
+    status.TextSize = 11
+    status.Parent = frame
+
+    local function submit()
+        local ok, reason = tryUseKey(box.Text)
+        if ok then
+            status.Text = loadstring(base64decode("T0ssIGxvYWRpbmcuLi4="))()
+            status.TextColor3 = Color3.fromRGB(0, 255, 100)
+            task.wait(0.5)
+            gui:Destroy()
+            callback()
+        else
+            status.Text = reason or loadstring(base64decode("S2V5IFNhbGFoIQ=="))()
+            box.Text = loadstring(base64decode(""))()
+        end
+    end
+
+    btn.Activated:Connect(submit)
+    box.FocusLost:Connect(function(enterPressed)
+        if enterPressed then submit() end
+    end)
+end
+
+local function RunMainScript()
+pcall(function()
+    task.wait(0.1)
+
+    local RunService = game:GetService(loadstring(base64decode("UnVuU2VydmljZQ=="))())
+    local ReplicatedStorage = game:GetService(loadstring(base64decode("UmVwbGljYXRlZFN0b3JhZ2U="))())
+    local TextChatService = game:GetService(loadstring(base64decode("VGV4dENoYXRTZXJ2aWNl"))())
+    local Workspace = game:GetService(loadstring(base64decode("V29ya3NwYWNl"))())
+    local Lighting = game:GetService(loadstring(base64decode("TGlnaHRpbmc="))())
+    local UserInputService = game:GetService(loadstring(base64decode("VXNlcklucHV0U2VydmljZQ=="))())
+    local CollectionService = game:GetService(loadstring(base64decode("Q29sbGVjdGlvblNlcnZpY2U="))())
+    local StarterGui = game:GetService(loadstring(base64decode("U3RhcnRlckd1aQ=="))())
+    local VirtualUser = game:GetService(loadstring(base64decode("VmlydHVhbFVzZXI="))())
+
+    local OwnersList = {
+        Rozolee5 = true
+    }
+    local isOwner = OwnersList[player.Name] or false
+
+    pcall(function()
+        player:SetAttribute(loadstring(base64decode("R1pDbGFuVXNlcg=="))(), true)
+        if isOwner then player:SetAttribute(loadstring(base64decode("R1pDbGFuT3duZXI="))(), true) end
+    end)
+
+    ----------------------------------------------------------------
+    -- cross client kick signal (owner only)
+    ----------------------------------------------------------------
+    local function handleKickSignal(senderName, targetName)
+        if targetName ~= player.Name then return end
+        local sender = Players:FindFirstChild(senderName)
+        if not sender then return end
+        if OwnersList[sender.Name] or sender:GetAttribute(loadstring(base64decode("R1pDbGFuT3duZXI="))()) then
+            player:Kick(loadstring(base64decode("R1pfS2lja19CeV9Pd25lcg=="))())
+        end
+    end
+
+    if TextChatService.ChatVersion == Enum.ChatVersion.TextChatService then
+        TextChatService.MessageReceived:Connect(function(message)
+            local text = message.Text or loadstring(base64decode(""))()
+            if text:sub(1, 10) == loadstring(base64decode("IUdaX0tJQ0tf"))() then
+                local senderName = message.Sender and message.Sender.Name or loadstring(base64decode(""))()
+                if senderName ~= loadstring(base64decode(""))() then handleKickSignal(senderName, text:sub(11)) end
+            end
+        end)
+    else
+        local chatEvents = ReplicatedStorage:FindFirstChild(loadstring(base64decode("RGVmYXVsdENoYXRTeXN0ZW1DaGF0RXZlbnRz"))())
+        local onClientEvent = chatEvents and chatEvents:FindFirstChild(loadstring(base64decode("T25DbGllbnRFdmVudA=="))())
+        if onClientEvent and onClientEvent:IsA(loadstring(base64decode("UmVtb3RlRXZlbnQ="))()) then
+            onClientEvent.OnClientEvent:Connect(function(data)
+                if type(data) == loadstring(base64decode("dGFibGU="))() then
+                    local text = data.Message or data.Text or loadstring(base64decode(""))()
+                    local senderName = data.SenderName or data.Sender or loadstring(base64decode(""))()
+                    if type(text) == loadstring(base64decode("c3RyaW5n"))() and text:sub(1, 10) == loadstring(base64decode("IUdaX0tJQ0tf"))() and senderName ~= loadstring(base64decode(""))() then
+                        handleKickSignal(senderName, text:sub(11))
+                    end
+                end
+            end)
+        end
+    end
+
+    local function sendKickSignal(targetName)
+        if TextChatService.ChatVersion == Enum.ChatVersion.TextChatService then
+            pcall(function()
+                local channel = TextChatService.TextChannels:FindFirstChild(loadstring(base64decode("UkJYR2VuZXJhbA=="))())
+                if channel then channel:SendAsync(loadstring(base64decode("IUdaX0tJQ0tf"))() .. targetName) end
+            end)
+        else
+            pcall(function()
+                local ev = ReplicatedStorage:FindFirstChild(loadstring(base64decode("RGVmYXVsdENoYXRTeXN0ZW1DaGF0RXZlbnRz"))())
+                ev = ev and ev:FindFirstChild(loadstring(base64decode("U2F5TWVzc2FnZVJlcXVlc3Q="))())
+                if ev then ev:FireServer(loadstring(base64decode("IUdaX0tJQ0tf"))() .. targetName, loadstring(base64decode("QWxs"))()) end
+            end)
+        end
+    end
+
+    ----------------------------------------------------------------
+    -- setup
+    ----------------------------------------------------------------
+    local ParentGui = (pcall(function() return CoreGui end) and CoreGui) or player:WaitForChild(loadstring(base64decode("UGxheWVyR3Vp"))())
+    if ParentGui:FindFirstChild(loadstring(base64decode("R1pzY3JpcHQ="))()) then
+        ParentGui.GZscript:Destroy()
+    end
+
+    local rEvents = ReplicatedStorage:FindFirstChild(loadstring(base64decode("ckV2ZW50cw=="))())
+    local muscleEvent = player:FindFirstChild(loadstring(base64decode("bXVzY2xlRXZlbnQ="))())
+    local rebirthRemote = rEvents and rEvents:FindFirstChild(loadstring(base64decode("cmViaXJ0aFJlbW90ZQ=="))())
+    local cPetShopRemote = rEvents and rEvents:FindFirstChild(loadstring(base64decode("Y1BldFNob3BSZW1vdGU="))())
+    local buyPetEggRemote = rEvents and rEvents:FindFirstChild(loadstring(base64decode("YnV5UGV0RWdnUmVtb3Rl"))())
+    local equipPetEvent = rEvents and rEvents:FindFirstChild(loadstring(base64decode("ZXF1aXBQZXRFdmVudA=="))())
+    local changeSpeedSizeRemote = rEvents and rEvents:FindFirstChild(loadstring(base64decode("Y2hhbmdlU3BlZWRTaXplUmVtb3Rl"))())
+    local giftRemote = rEvents and rEvents:FindFirstChild(loadstring(base64decode("Z2lmdFJlbW90ZQ=="))())
+
+    getgenv().GZ = getgenv().GZ or {}
+    local GZ = getgenv().GZ
+    GZ.running = true
+    GZ.killWhitelist = GZ.killWhitelist or {}
+    GZ.selectedPet = GZ.selectedPet or loadstring(base64decode("TXVzY2xlIEtpbmc="))()
+    GZ.targetEgg = GZ.targetEgg or loadstring(base64decode("SnVuZ2xlIEVnZw=="))()
+    GZ.giftTarget = GZ.giftTarget or loadstring(base64decode(""))()
+    GZ.kickTarget = GZ.kickTarget or loadstring(base64decode(""))()
+    GZ.hitboxSize = GZ.hitboxSize or 40
+    GZ.orbitSpeed = GZ.orbitSpeed or 40
+    GZ.dodgeInterval = GZ.dodgeInterval or 5
+    GZ.dodgeHeight = GZ.dodgeHeight or 130
+    GZ.returnDelay = GZ.returnDelay or 1
+    GZ.dodgeBack = GZ.dodgeBack or 60
+    GZ.dodging = false
+    GZ.retreating = false
+    GZ._origHitbox = GZ._origHitbox or setmetatable({}, { __mode = loadstring(base64decode("aw=="))() })
+
+    ----------------------------------------------------------------
+    -- pet limit 200/week (owner unlimited)
+    ----------------------------------------------------------------
+    local WEEK_SECONDS = 604800
+    local PET_WEEKLY_LIMIT = 200
+    local SAVE_FILE_NAME = loadstring(base64decode("R1pfUGV0U2VjdXJpdHlEYXRhLmpzb24="))()
+
+    local function loadPetData()
+        if isfile and readfile and isfile(SAVE_FILE_NAME) then
+            local ok, content = pcall(function()
+                return HttpService:JSONDecode(readfile(SAVE_FILE_NAME))
+            end)
+            if ok and type(content) == loadstring(base64decode("dGFibGU="))() then
+                content.limit = PET_WEEKLY_LIMIT
+                return content
+            end
+        end
+        return { count = 0, resetTime = os.time(), limit = PET_WEEKLY_LIMIT }
+    end
+
+    local function savePetData(data)
+        if writefile then
+            pcall(function()
+                data.limit = PET_WEEKLY_LIMIT
+                writefile(SAVE_FILE_NAME, HttpService:JSONEncode(data))
+            end)
+        end
+    end
+
+    GZ.petData = loadPetData()
+
+    local function canBuyPet()
+        if isOwner then return true end
+        local now = os.time()
+        if now - (GZ.petData.resetTime or os.time()) >= WEEK_SECONDS then
+            GZ.petData.count = 0
+            GZ.petData.resetTime = now
+            savePetData(GZ.petData)
+        end
+        return GZ.petData.count < PET_WEEKLY_LIMIT
+    end
+
+    local function getResetTimeString()
+        if isOwner then return loadstring(base64decode("LQ=="))() end
+        local now = os.time()
+        local remaining = WEEK_SECONDS - (now - (GZ.petData.resetTime or now))
+        if remaining <= 0 then return loadstring(base64decode("bm93"))() end
+        local days = math.floor(remaining / 86400)
+        local hours = math.floor((remaining % 86400) / 3600)
+        local mins = math.floor((remaining % 3600) / 60)
+        return string.format(loadstring(base64decode("JWRkICVkaCAlZG0="))(), days, hours, mins)
+    end
+
+    ----------------------------------------------------------------
+    -- helpers
+    ----------------------------------------------------------------
+    local function fireRep()
+        if muscleEvent then pcall(function() muscleEvent:FireServer(loadstring(base64decode("cmVw"))()) end) end
+    end
+
+    local function firePunch(h)
+        if muscleEvent then pcall(function() muscleEvent:FireServer(loadstring(base64decode("cHVuY2g="))(), h) end) end
+    end
+
+    local function doRebirth()
+        if rebirthRemote then pcall(function() rebirthRemote:InvokeServer(loadstring(base64decode("cmViaXJ0aFJlcXVlc3Q="))()) end) end
+    end
+
+    local function buyEgg(eggName)
+        if buyPetEggRemote then
+            pcall(function() buyPetEggRemote:InvokeServer(loadstring(base64decode("YnV5UGV0RWdn"))(), eggName) end)
+        end
+    end
+
+    local function equipPetByName(name)
+        if equipPetEvent and player:FindFirstChild(loadstring(base64decode("cGV0c0ZvbGRlcg=="))()) then
+            for _, f in pairs(player.petsFolder:GetChildren()) do
+                if f:IsA(loadstring(base64decode("Rm9sZGVy"))()) then
+                    for _, p in pairs(f:GetChildren()) do
+                        if p.Name == name then
+                            equipPetEvent:FireServer(loadstring(base64decode("ZXF1aXBQZXQ="))(), p)
+                            return true
+                        end
+                    end
+                end
+            end
+        end
+    end
+
+    local function fmt(n)
+        n = tonumber(n) or 0
+        if n >= 1e15 then return string.format(loadstring(base64decode("JS4yZlFh"))(), n / 1e15)
+        elseif n >= 1e12 then return string.format(loadstring(base64decode("JS4yZlQ="))(), n / 1e12)
+        elseif n >= 1e9 then return string.format(loadstring(base64decode("JS4yZkI="))(), n / 1e9)
+        elseif n >= 1e6 then return string.format(loadstring(base64decode("JS4yZk0="))(), n / 1e6)
+        elseif n >= 1e3 then return string.format(loadstring(base64decode("JS4yZks="))(), n / 1e3)
+        else return tostring(math.floor(n)) end
+    end
+
+    local function tpTo(pos)
+        local c = player.Character
+        if c and c:FindFirstChild(loadstring(base64decode("SHVtYW5vaWRSb290UGFydA=="))()) then
+            c.HumanoidRootPart.CFrame = CFrame.new(pos)
+        end
+    end
+
+    ----------------------------------------------------------------
+    -- boss config (dari BossEventConfig)
+    ----------------------------------------------------------------
+    local BOSS_TAG = loadstring(base64decode("Qm9zc0V2ZW50Qm9zcw=="))()
+    local BOSS_DAMAGE_HITBOX_NAME = loadstring(base64decode("Qm9zc0RhbWFnZUhpdGJveA=="))()
+    local ATTR_HEALTH = loadstring(base64decode("Qm9zc0hlYWx0aA=="))()
+    local ATTR_MAX_HEALTH = loadstring(base64decode("Qm9zc01heEhlYWx0aA=="))()
+    local ATTR_DISPLAY_NAME = loadstring(base64decode("Qm9zc0Rpc3BsYXlOYW1l"))()
+    local ATTR_RARITY = loadstring(base64decode("Qm9zc1Jhcml0eQ=="))()
+    local ATTR_NEXT_TIME = loadstring(base64decode("Qm9zc1NwYXduTmV4dFRpbWU="))()
+    local ATTACK_KIND_ATTR = loadstring(base64decode("Qm9zc0F0dGFja0tpbmQ="))()
+    local ATTACK_IMPACT_ATTR = loadstring(base64decode("Qm9zc0F0dGFja0ltcGFjdFRpbWU="))()
+    local ATTACK_SEQ_ATTR = loadstring(base64decode("Qm9zc0F0dGFja1NlcXVlbmNl"))()
+    local ATTACK_CFRAME_ATTR = loadstring(base64decode("Qm9zc0F0dGFja0NGcmFtZQ=="))()
+    local MIN_HIT_INTERVAL = 0.3
+
+    local RARITY_NAMES = {
+        [1] = loadstring(base64decode("Q29tbW9uIEJvc3M="))(),
+        [2] = loadstring(base64decode("UmFyZSBCb3Nz"))(),
+        [3] = loadstring(base64decode("RXBpYyBCb3Nz"))(),
+        [4] = loadstring(base64decode("TGVnZW5kYXJ5IEJvc3M="))(),
+        [5] = loadstring(base64decode("TXl0aGljIEJvc3M="))(),
+        [6] = loadstring(base64decode("UmFpbmJvdyBCb3NzIChBZG1pbik="))()
+    }
+    local BOSS_MODEL_NAMES = {
+        Boss1 = loadstring(base64decode("Q29tbW9uIEJvc3M="))(), Boss2 = loadstring(base64decode("UmFyZSBCb3Nz"))(), Boss3 = loadstring(base64decode("RXBpYyBCb3Nz"))(),
+        Boss4 = loadstring(base64decode("TGVnZW5kYXJ5IEJvc3M="))(), Boss5 = loadstring(base64decode("TXl0aGljIEJvc3M="))(), BossRainbow = loadstring(base64decode("UmFpbmJvdyBCb3NzIChBZG1pbik="))()
+    }
+
+    local function findBossModel()
+        local ok, tagged = pcall(function() return CollectionService:GetTagged(BOSS_TAG) end)
+        if ok and tagged then
+            for _, model in pairs(tagged) do
+                if model:IsA(loadstring(base64decode("TW9kZWw="))()) and model.Parent and model:IsDescendantOf(Workspace) then
+                    return model
+                end
+            end
+        end
+        for _, obj in pairs(Workspace:GetChildren()) do
+            if obj:IsA(loadstring(base64decode("TW9kZWw="))()) and BOSS_MODEL_NAMES[obj.Name] then
+                return obj
+            end
+        end
+        return nil
+    end
+
+    local function getBossPart()
+        local model = findBossModel()
+        if not model then return nil end
+        local hb = model:FindFirstChild(BOSS_DAMAGE_HITBOX_NAME, true)
+        if hb and hb:IsA(loadstring(base64decode("QmFzZVBhcnQ="))()) then return hb end
+        return model:FindFirstChild(loadstring(base64decode("SHVtYW5vaWRSb290UGFydA=="))())
+            or model.PrimaryPart
+            or model:FindFirstChildWhichIsA(loadstring(base64decode("QmFzZVBhcnQ="))())
+    end
+
+    local function getBossInfo()
+        local model = findBossModel()
+        if not model then return nil end
+        local name = model:GetAttribute(ATTR_DISPLAY_NAME)
+        if type(name) ~= loadstring(base64decode("c3RyaW5n"))() or name == loadstring(base64decode(""))() then
+            local idx = tonumber(model:GetAttribute(loadstring(base64decode("Qm9zc1Jhcml0eUluZGV4"))())) or tonumber(Workspace:GetAttribute(ATTR_RARITY))
+            name = RARITY_NAMES[idx] or BOSS_MODEL_NAMES[model.Name] or model.Name
+        end
+        local hp = tonumber(Workspace:GetAttribute(ATTR_HEALTH))
+        local maxHp = tonumber(Workspace:GetAttribute(ATTR_MAX_HEALTH))
+        if not hp or not maxHp then
+            local hum = model:FindFirstChildOfClass(loadstring(base64decode("SHVtYW5vaWQ="))())
+            if hum then
+                hp = hp or hum.Health
+                maxHp = maxHp or hum.MaxHealth
+            end
+        end
+        return model, name, hp, maxHp
+    end
+
+    ----------------------------------------------------------------
+    -- silence pet purchase popups
+    ----------------------------------------------------------------
+    local silentMode = true
+
+    pcall(function()
+        local oldSetCore = StarterGui.SetCore
+        StarterGui.SetCore = function(self, name, data)
+            if silentMode and name == loadstring(base64decode("U2VuZE5vdGlmaWNhdGlvbg=="))() and type(data) == loadstring(base64decode("dGFibGU="))() then
+                local t = ((data.Title or loadstring(base64decode(""))()) .. loadstring(base64decode("IA=="))() .. (data.Text or loadstring(base64decode(""))())):lower()
+                if t:match(loadstring(base64decode("cGV0"))()) or t:match(loadstring(base64decode("Ym91Z2h0"))()) or t:match(loadstring(base64decode("cHVyY2hhc2U="))()) or t:match(loadstring(base64decode("ZWdn"))()) then
+                    return
+                end
+            end
+            return oldSetCore(self, name, data)
+        end
+    end)
+
+    pcall(function()
+        local oldNamecall
+        oldNamecall = hookmetamethod(game, loadstring(base64decode("X19uYW1lY2FsbA=="))(), function(self, ...)
+            if silentMode and getnamecallmethod() == loadstring(base64decode("RmlyZVNlcnZlcg=="))() then
+                local nm = (self and self.Name or loadstring(base64decode(""))()):lower()
+                if nm:match(loadstring(base64decode("bm90aWY="))()) or nm:match(loadstring(base64decode("YWxlcnQ="))()) or nm:match(loadstring(base64decode("cG9wdXA="))()) then
+                    return
+                end
+            end
+            return oldNamecall(self, ...)
+        end)
+    end)
+
+    task.spawn(function()
+        while GZ.running do
+            pcall(function()
+                local pg = player:FindFirstChild(loadstring(base64decode("UGxheWVyR3Vp"))())
+                if pg then
+                    for _, gui in pairs(pg:GetChildren()) do
+                        if gui and gui.Name ~= loadstring(base64decode("R1pzY3JpcHQ="))() and gui.Name ~= loadstring(base64decode("R1pfS2V5VUk="))() then
+                            local n = gui.Name:lower()
+                            if n:match(loadstring(base64decode("cGV0"))()) and (n:match(loadstring(base64decode("b2J0YWlu"))()) or n:match(loadstring(base64decode("cG9wdXA="))())
+                            or n:match(loadstring(base64decode("bm90aWY="))()) or n:match(loadstring(base64decode("YnV5"))()) or n:match(loadstring(base64decode("cHVyY2hhc2U="))())
+                            or n:match(loadstring(base64decode("YWxlcnQ="))()) or n:match(loadstring(base64decode("cmV3YXJk"))())) then
+                                gui:Destroy()
+                            end
+                        end
+                    end
+                end
+            end)
+            task.wait(0.5)
+        end
+    end)
+
+    local function executeBuy(name)
+        if not cPetShopRemote or not name or name == loadstring(base64decode(""))() then return false end
+        if not canBuyPet() then return false end
+
+        local folder = ReplicatedStorage:FindFirstChild(loadstring(base64decode("Y1BldFNob3BGb2xkZXI="))())
+            or (ReplicatedStorage:FindFirstChild(loadstring(base64decode("c2hhcmVk"))())
+                and ReplicatedStorage.shared:FindFirstChild(loadstring(base64decode("cnVudGltZQ=="))())
+                and ReplicatedStorage.shared.runtime:FindFirstChild(loadstring(base64decode("Y1BldFNob3BGb2xkZXI="))()))
+        if not folder then return false end
+
+        local petObj = folder:FindFirstChild(name)
+        if not petObj then return false end
+
+        local ok = pcall(function()
+            cPetShopRemote:InvokeServer(petObj)
+            cPetShopRemote:InvokeServer(loadstring(base64decode("YnV5UGV0"))(), petObj)
+        end)
+
+        if ok and not isOwner then
+            GZ.petData.count = GZ.petData.count + 1
+            savePetData(GZ.petData)
+        end
+        return ok
+    end
+
+    ----------------------------------------------------------------
+    -- theme + gui
+    ----------------------------------------------------------------
+    local Theme = {
+        Bg = Color3.fromRGB(15, 15, 20),
+        Card = Color3.fromRGB(24, 24, 32),
+        Stroke = Color3.fromRGB(45, 45, 60),
+        Text = Color3.fromRGB(245, 245, 250),
+        Sub = Color3.fromRGB(150, 150, 165),
+        Accent = Color3.fromRGB(235, 45, 75),
+        On = Color3.fromRGB(0, 220, 110),
+        Off = Color3.fromRGB(45, 45, 55)
+    }
+
+    local Screen = Instance.new(loadstring(base64decode("U2NyZWVuR3Vp"))(), ParentGui)
+    Screen.Name = loadstring(base64decode("R1pzY3JpcHQ="))()
+    Screen.ResetOnSpawn = false
+
+    local Main = Instance.new(loadstring(base64decode("RnJhbWU="))(), Screen)
+    Main.Size = UDim2.fromOffset(340, 245)
+    Main.Position = UDim2.new(0.5, -170, 0.5, -122)
+    Main.BackgroundColor3 = Theme.Bg
+    Main.ClipsDescendants = true
+    Instance.new(loadstring(base64decode("VUlDb3JuZXI="))(), Main).CornerRadius = UDim.new(0, 10)
+    local MainStroke = Instance.new(loadstring(base64decode("VUlTdHJva2U="))(), Main)
+    MainStroke.Color = Theme.Stroke
+    MainStroke.Thickness = 1.2
+
+    local ToggleBtn = Instance.new(loadstring(base64decode("VGV4dEJ1dHRvbg=="))(), Screen)
+    ToggleBtn.Name = loadstring(base64decode("R1pfT3BlblRvZ2dsZQ=="))()
+    ToggleBtn.Size = UDim2.fromOffset(44, 44)
+    ToggleBtn.Position = UDim2.new(0.02, 0, 0.2, 0)
+    ToggleBtn.BackgroundColor3 = Color3.fromRGB(22, 22, 30)
+    ToggleBtn.Text = loadstring(base64decode("R1o="))()
+    ToggleBtn.TextColor3 = Theme.Accent
+    ToggleBtn.Font = Enum.Font.GothamBold
+    ToggleBtn.TextSize = 13
+    Instance.new(loadstring(base64decode("VUlDb3JuZXI="))(), ToggleBtn).CornerRadius = UDim.new(0.35, 0)
+
+    local ToggleStroke = Instance.new(loadstring(base64decode("VUlTdHJva2U="))(), ToggleBtn)
+    ToggleStroke.Color = Theme.Accent
+    ToggleStroke.Thickness = 2
+
+    local function setToggleVisual(on)
+        ToggleStroke.Color = on and Theme.Accent or Color3.fromRGB(80, 80, 100)
+        ToggleBtn.TextColor3 = on and Theme.Accent or Theme.Sub
+    end
+
+    local function toggleUI()
+        Main.Visible = not Main.Visible
+        setToggleVisual(Main.Visible)
+    end
+
+    ToggleBtn.Activated:Connect(toggleUI)
+
+    UserInputService.InputBegan:Connect(function(inp, gpe)
+        if not gpe and inp.KeyCode == Enum.KeyCode.RightControl then
+            toggleUI()
+        end
+    end)
+
+    local function enableDrag(dragHandle, frameToMove)
+        local dragging, dragStart, startPos
+        dragHandle.InputBegan:Connect(function(inp)
+            if inp.UserInputType == Enum.UserInputType.MouseButton1 or inp.UserInputType == Enum.UserInputType.Touch then
+                dragging = true
+                dragStart = inp.Position
+                startPos = frameToMove.Position
+            end
+        end)
+        UserInputService.InputChanged:Connect(function(inp)
+            if dragging and (inp.UserInputType == Enum.UserInputType.MouseMovement or inp.UserInputType == Enum.UserInputType.Touch) then
+                local delta = inp.Position - dragStart
+                frameToMove.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+            end
+        end)
+        UserInputService.InputEnded:Connect(function(inp)
+            if inp.UserInputType == Enum.UserInputType.MouseButton1 or inp.UserInputType == Enum.UserInputType.Touch then
+                dragging = false
+            end
+        end)
+    end
+    enableDrag(ToggleBtn, ToggleBtn)
+
+    local Header = Instance.new(loadstring(base64decode("RnJhbWU="))(), Main)
+    Header.Size = UDim2.new(1, 0, 0, 28)
+    Header.BackgroundColor3 = Theme.Card
+    Instance.new(loadstring(base64decode("VUlDb3JuZXI="))(), Header).CornerRadius = UDim.new(0, 10)
+    enableDrag(Header, Main)
+
+    local Title = Instance.new(loadstring(base64decode("VGV4dExhYmVs"))(), Header)
+    Title.Size = UDim2.new(1, -35, 1, 0)
+    Title.Position = UDim2.new(0, 10, 0, 0)
+    Title.BackgroundTransparency = 1
+    Title.Text = isOwner and loadstring(base64decode("R1pzY3JpcHQgIHwgIG93bmVy"))() or loadstring(base64decode("R1pzY3JpcHQ="))()
+    Title.TextColor3 = Theme.Text
+    Title.Font = Enum.Font.GothamBold
+    Title.TextSize = 11
+    Title.TextXAlignment = Enum.TextXAlignment.Left
+
+    local CloseBtn = Instance.new(loadstring(base64decode("VGV4dEJ1dHRvbg=="))(), Header)
+    CloseBtn.Size = UDim2.fromOffset(18, 18)
+    CloseBtn.Position = UDim2.new(1, -24, 0.5, -9)
+    CloseBtn.BackgroundColor3 = Color3.fromRGB(35, 35, 48)
+    CloseBtn.Text = loadstring(base64decode("WA=="))()
+    CloseBtn.TextColor3 = Color3.fromRGB(240, 240, 250)
+    CloseBtn.Font = Enum.Font.GothamBold
+    CloseBtn.TextSize = 10
+    Instance.new(loadstring(base64decode("VUlDb3JuZXI="))(), CloseBtn).CornerRadius = UDim.new(1, 0)
+
+    CloseBtn.Activated:Connect(function()
+        Main.Visible = false
+        setToggleVisual(false)
+    end)
+
+    local TabBar = Instance.new(loadstring(base64decode("U2Nyb2xsaW5nRnJhbWU="))(), Main)
+    TabBar.Size = UDim2.new(1, 0, 0, 24)
+    TabBar.Position = UDim2.new(0, 0, 0, 28)
+    TabBar.BackgroundColor3 = Theme.Bg
+    TabBar.BorderSizePixel = 0
+    TabBar.ScrollBarThickness = 0
+    TabBar.ScrollingDirection = Enum.ScrollingDirection.X
+    TabBar.CanvasSize = UDim2.new(0, 0, 0, 0)
+    TabBar.Active = true
+
+    local TabLayout = Instance.new(loadstring(base64decode("VUlMaXN0TGF5b3V0"))(), TabBar)
+    TabLayout.FillDirection = Enum.FillDirection.Horizontal
+    TabLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    TabLayout.Padding = UDim.new(0, 3)
+    Instance.new(loadstring(base64decode("VUlQYWRkaW5n"))(), TabBar).PaddingLeft = UDim.new(0, 4)
+
+    TabLayout:GetPropertyChangedSignal(loadstring(base64decode("QWJzb2x1dGVDb250ZW50U2l6ZQ=="))()):Connect(function()
+        TabBar.CanvasSize = UDim2.new(0, TabLayout.AbsoluteContentSize.X + 6, 0, 0)
+    end)
+
+    local ContentContainer = Instance.new(loadstring(base64decode("RnJhbWU="))(), Main)
+    ContentContainer.Size = UDim2.new(1, 0, 1, -52)
+    ContentContainer.Position = UDim2.new(0, 0, 0, 52)
+    ContentContainer.BackgroundTransparency = 1
+
+    local tabs = {}
+    local activeTab = nil
+
+    local function createTab(name)
+        local btn = Instance.new(loadstring(base64decode("VGV4dEJ1dHRvbg=="))(), TabBar)
+        btn.Size = UDim2.fromOffset(58, 20)
+        btn.BackgroundColor3 = Theme.Card
+        btn.BackgroundTransparency = 0.4
+        btn.Text = name
+        btn.TextColor3 = Theme.Sub
+        btn.Font = Enum.Font.Gotham
+        btn.TextSize = 9
+        Instance.new(loadstring(base64decode("VUlDb3JuZXI="))(), btn).CornerRadius = UDim.new(0, 4)
+
+        local content = Instance.new(loadstring(base64decode("U2Nyb2xsaW5nRnJhbWU="))(), ContentContainer)
+        content.Size = UDim2.new(1, 0, 1, 0)
+        content.BackgroundTransparency = 1
+        content.ScrollBarThickness = 2
+        content.ScrollBarImageColor3 = Theme.Accent
+        content.Visible = false
+        content.Active = true
+
+        local layout = Instance.new(loadstring(base64decode("VUlMaXN0TGF5b3V0"))(), content)
+        layout.SortOrder = Enum.SortOrder.LayoutOrder
+        layout.Padding = UDim.new(0, 3)
+        local pad = Instance.new(loadstring(base64decode("VUlQYWRkaW5n"))(), content)
+        pad.PaddingTop = UDim.new(0, 3)
+        pad.PaddingLeft = UDim.new(0, 5)
+        pad.PaddingRight = UDim.new(0, 5)
+        pad.PaddingBottom = UDim.new(0, 6)
+
+        layout:GetPropertyChangedSignal(loadstring(base64decode("QWJzb2x1dGVDb250ZW50U2l6ZQ=="))()):Connect(function()
+            content.CanvasSize = UDim2.new(0, 0, 0, layout.AbsoluteContentSize.Y + 6)
+        end)
+
+        btn.Activated:Connect(function()
+            for _, t in pairs(tabs) do
+                t.content.Visible = false
+                t.btn.BackgroundTransparency = 0.4
+                t.btn.TextColor3 = Theme.Sub
+            end
+            content.Visible = true
+            btn.BackgroundTransparency = 0
+            btn.TextColor3 = Theme.Accent
+            activeTab = name
+        end)
+
+        if not activeTab then
+            activeTab = name
+            content.Visible = true
+            btn.BackgroundTransparency = 0
+            btn.TextColor3 = Theme.Accent
+        end
+
+        local el = { content = content, btn = btn }
+
+        function el:AddLabel(txt, col)
+            local lbl = Instance.new(loadstring(base64decode("VGV4dExhYmVs"))(), content)
+            lbl.Size = UDim2.new(1, 0, 0, 15)
+            lbl.BackgroundTransparency = 1
+            lbl.Text = txt
+            lbl.TextColor3 = col or Theme.Sub
+            lbl.Font = Enum.Font.GothamBold
+            lbl.TextSize = 10
+            lbl.TextXAlignment = Enum.TextXAlignment.Left
+            return lbl
+        end
+
+        function el:AddMultiLabel(txt, col)
+            local lbl = Instance.new(loadstring(base64decode("VGV4dExhYmVs"))(), content)
+            lbl.Size = UDim2.new(1, 0, 0, 0)
+            lbl.AutomaticSize = Enum.AutomaticSize.Y
+            lbl.BackgroundTransparency = 1
+            lbl.Text = txt
+            lbl.TextColor3 = col or Theme.Sub
+            lbl.Font = Enum.Font.Gotham
+            lbl.TextSize = 9
+            lbl.TextXAlignment = Enum.TextXAlignment.Left
+            lbl.TextYAlignment = Enum.TextYAlignment.Top
+            lbl.TextWrapped = true
+            return lbl
+        end
+
+        function el:AddButton(txt, cb)
+            local f = Instance.new(loadstring(base64decode("RnJhbWU="))(), content)
+            f.Size = UDim2.new(1, 0, 0, 23)
+            f.BackgroundColor3 = Theme.Card
+            Instance.new(loadstring(base64decode("VUlDb3JuZXI="))(), f).CornerRadius = UDim.new(0, 4)
+            Instance.new(loadstring(base64decode("VUlTdHJva2U="))(), f).Color = Theme.Stroke
+
+            local b = Instance.new(loadstring(base64decode("VGV4dEJ1dHRvbg=="))(), f)
+            b.Size = UDim2.new(1, 0, 1, 0)
+            b.BackgroundTransparency = 1
+            b.Text = txt
+            b.TextColor3 = Theme.Text
+            b.Font = Enum.Font.Gotham
+            b.TextSize = 10
+
+            b.Activated:Connect(function()
+                if cb then pcall(cb) end
+            end)
+            return b
+        end
+
+        function el:AddToggle(txt, def, cb)
+            local state = def or false
+            local f = Instance.new(loadstring(base64decode("RnJhbWU="))(), content)
+            f.Size = UDim2.new(1, 0, 0, 23)
+            f.BackgroundColor3 = Theme.Card
+            Instance.new(loadstring(base64decode("VUlDb3JuZXI="))(), f).CornerRadius = UDim.new(0, 4)
+            Instance.new(loadstring(base64decode("VUlTdHJva2U="))(), f).Color = Theme.Stroke
+
+            local l = Instance.new(loadstring(base64decode("VGV4dExhYmVs"))(), f)
+            l.Size = UDim2.new(0.7, 0, 1, 0)
+            l.Position = UDim2.new(0, 6, 0, 0)
+            l.BackgroundTransparency = 1
+            l.Text = txt
+            l.TextColor3 = Theme.Text
+            l.Font = Enum.Font.Gotham
+            l.TextSize = 10
+            l.TextXAlignment = Enum.TextXAlignment.Left
+
+            local sw = Instance.new(loadstring(base64decode("RnJhbWU="))(), f)
+            sw.Size = UDim2.fromOffset(22, 10)
+            sw.Position = UDim2.new(1, -28, 0.5, -5)
+            sw.BackgroundColor3 = state and Theme.On or Theme.Off
+            Instance.new(loadstring(base64decode("VUlDb3JuZXI="))(), sw).CornerRadius = UDim.new(1, 0)
+
+            local kn = Instance.new(loadstring(base64decode("RnJhbWU="))(), sw)
+            kn.Size = UDim2.fromOffset(6, 6)
+            kn.Position = UDim2.new(0, state and 14 or 2, 0.5, -3)
+            kn.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+            Instance.new(loadstring(base64decode("VUlDb3JuZXI="))(), kn).CornerRadius = UDim.new(1, 0)
+
+            local btn = Instance.new(loadstring(base64decode("VGV4dEJ1dHRvbg=="))(), f)
+            btn.Size = UDim2.new(1, 0, 1, 0)
+            btn.BackgroundTransparency = 1
+            btn.Text = loadstring(base64decode(""))()
+
+            local function update(v)
+                state = v
+                sw.BackgroundColor3 = state and Theme.On or Theme.Off
+                kn.Position = UDim2.new(0, state and 14 or 2, 0.5, -3)
+            end
+
+            btn.Activated:Connect(function()
+                update(not state)
+                if cb then pcall(cb, state) end
+            end)
+
+            return { Set = function(v) update(v) if cb then pcall(cb, v) end end, Get = function() return state end }
+        end
+
+        function el:AddInput(txt, ph, cb)
+            local f = Instance.new(loadstring(base64decode("RnJhbWU="))(), content)
+            f.Size = UDim2.new(1, 0, 0, 23)
+            f.BackgroundColor3 = Theme.Card
+            Instance.new(loadstring(base64decode("VUlDb3JuZXI="))(), f).CornerRadius = UDim.new(0, 4)
+            Instance.new(loadstring(base64decode("VUlTdHJva2U="))(), f).Color = Theme.Stroke
+
+            local l = Instance.new(loadstring(base64decode("VGV4dExhYmVs"))(), f)
+            l.Size = UDim2.new(0.45, 0, 1, 0)
+            l.Position = UDim2.new(0, 6, 0, 0)
+            l.BackgroundTransparency = 1
+            l.Text = txt
+            l.TextColor3 = Theme.Text
+            l.Font = Enum.Font.Gotham
+            l.TextSize = 10
+            l.TextXAlignment = Enum.TextXAlignment.Left
+
+            local b = Instance.new(loadstring(base64decode("VGV4dEJveA=="))(), f)
+            b.Size = UDim2.new(0, 85, 0, 15)
+            b.Position = UDim2.new(0.55, 0, 0.5, -7.5)
+            b.BackgroundColor3 = Theme.Bg
+            b.TextColor3 = Theme.Text
+            b.PlaceholderText = ph or loadstring(base64decode(""))()
+            b.Font = Enum.Font.Gotham
+            b.TextSize = 9
+            b.Text = loadstring(base64decode(""))()
+            Instance.new(loadstring(base64decode("VUlDb3JuZXI="))(), b).CornerRadius = UDim.new(0, 3)
+
+            b.FocusLost:Connect(function(enterPressed) if cb then pcall(cb, b.Text, enterPressed) end end)
+            return b
+        end
+
+        -- player dropdown (auto refresh on open)
+        function el:AddDropdown(txt, cb)
+            local selected = nil
+
+            local f = Instance.new(loadstring(base64decode("RnJhbWU="))(), content)
+            f.Size = UDim2.new(1, 0, 0, 23)
+            f.BackgroundColor3 = Theme.Card
+            Instance.new(loadstring(base64decode("VUlDb3JuZXI="))(), f).CornerRadius = UDim.new(0, 4)
+            Instance.new(loadstring(base64decode("VUlTdHJva2U="))(), f).Color = Theme.Stroke
+
+            local l = Instance.new(loadstring(base64decode("VGV4dExhYmVs"))(), f)
+            l.Size = UDim2.new(0.45, 0, 1, 0)
+            l.Position = UDim2.new(0, 6, 0, 0)
+            l.BackgroundTransparency = 1
+            l.Text = txt
+            l.TextColor3 = Theme.Text
+            l.Font = Enum.Font.Gotham
+            l.TextSize = 10
+            l.TextXAlignment = Enum.TextXAlignment.Left
+
+            local openBtn = Instance.new(loadstring(base64decode("VGV4dEJ1dHRvbg=="))(), f)
+            openBtn.Size = UDim2.new(0, 120, 0, 15)
+            openBtn.Position = UDim2.new(1, -126, 0.5, -7.5)
+            openBtn.BackgroundColor3 = Theme.Bg
+            openBtn.TextColor3 = Theme.Sub
+            openBtn.Text = loadstring(base64decode("c2VsZWN0Li4u"))()
+            openBtn.Font = Enum.Font.Gotham
+            openBtn.TextSize = 9
+            Instance.new(loadstring(base64decode("VUlDb3JuZXI="))(), openBtn).CornerRadius = UDim.new(0, 3)
+
+            local list = Instance.new(loadstring(base64decode("RnJhbWU="))(), content)
+            list.Size = UDim2.new(1, 0, 0, 0)
+            list.AutomaticSize = Enum.AutomaticSize.Y
+            list.BackgroundTransparency = 1
+            list.Visible = false
+
+            local listLayout = Instance.new(loadstring(base64decode("VUlMaXN0TGF5b3V0"))(), list)
+            listLayout.SortOrder = Enum.SortOrder.LayoutOrder
+            listLayout.Padding = UDim.new(0, 2)
+
+            local function refreshList()
+                for _, c in pairs(list:GetChildren()) do
+                    if c:IsA(loadstring(base64decode("VGV4dEJ1dHRvbg=="))()) then c:Destroy() end
+                end
+
+                local rf = Instance.new(loadstring(base64decode("VGV4dEJ1dHRvbg=="))(), list)
+                rf.Size = UDim2.new(1, 0, 0, 18)
+                rf.BackgroundColor3 = Theme.Bg
+                rf.TextColor3 = Theme.Accent
+                rf.Text = loadstring(base64decode("cmVmcmVzaA=="))()
+                rf.Font = Enum.Font.Gotham
+                rf.TextSize = 9
+                Instance.new(loadstring(base64decode("VUlDb3JuZXI="))(), rf).CornerRadius = UDim.new(0, 3)
+                rf.Activated:Connect(refreshList)
+
+                for _, p in pairs(Players:GetPlayers()) do
+                    if p ~= player then
+                        local ib = Instance.new(loadstring(base64decode("VGV4dEJ1dHRvbg=="))(), list)
+                        ib.Size = UDim2.new(1, 0, 0, 18)
+                        ib.BackgroundColor3 = Theme.Card
+                        ib.TextColor3 = Theme.Text
+                        ib.Text = p.Name
+                        ib.Font = Enum.Font.Gotham
+                        ib.TextSize = 9
+                        Instance.new(loadstring(base64decode("VUlDb3JuZXI="))(), ib).CornerRadius = UDim.new(0, 3)
+                        ib.Activated:Connect(function()
+                            selected = p.Name
+                            openBtn.Text = p.Name
+                            openBtn.TextColor3 = Theme.Text
+                            list.Visible = false
+                            if cb then pcall(cb, p.Name) end
+                        end)
+                    end
+                end
+            end
+
+            openBtn.Activated:Connect(function()
+                if list.Visible then
+                    list.Visible = false
+                else
+                    refreshList()
+                    list.Visible = true
+                end
+            end)
+
+            return { Get = function() return selected end }
+        end
+
+        tabs[name] = el
+        return el
+    end
+
+    -- tab order
+    local tabNames = {loadstring(base64decode("RmFybWluZw=="))(), loadstring(base64decode("Qm9zcw=="))(), loadstring(base64decode("Um9ja3M="))(), loadstring(base64decode("S2lsbA=="))(), loadstring(base64decode("R2lmdHM="))(), loadstring(base64decode("VGVsZXBvcnQ="))(), loadstring(base64decode("U3RhdHM="))(), loadstring(base64decode("TWlzYw=="))(), loadstring(base64decode("Q3JlZGl0cw=="))()}
+    if isOwner then table.insert(tabNames, 1, loadstring(base64decode("T3duZXI="))()) end
+    for _, name in ipairs(tabNames) do createTab(name) end
+
+    ----------------------------------------------------------------
+    -- owner tab
+    ----------------------------------------------------------------
+    if isOwner then
+        local Owner = tabs[loadstring(base64decode("T3duZXI="))()]
+        Owner:AddLabel(loadstring(base64decode("b3duZXI="))(), Theme.Accent)
+
+        Owner:AddLabel(loadstring(base64decode("a2ljayB1c2Vy"))())
+        local kickInputBox = Owner:AddInput(loadstring(base64decode("VGFyZ2V0"))(), loadstring(base64decode("VXNlcm5hbWU="))(), function(t)
+            GZ.kickTarget = t
+        end)
+        Owner:AddButton(loadstring(base64decode("S2ljayBVc2Vy"))(), function()
+            local targetName = (kickInputBox.Text ~= loadstring(base64decode(""))() and kickInputBox.Text) or GZ.kickTarget
+            if targetName and targetName ~= loadstring(base64decode(""))() and targetName ~= player.Name then
+                sendKickSignal(targetName)
+            end
+        end)
+
+        Owner:AddLabel(loadstring(base64decode("ZWdnIGJ1eWVy"))())
+        local eggInputBox = Owner:AddInput(loadstring(base64decode("RWdn"))(), loadstring(base64decode("SnVuZ2xlIEVnZw=="))(), function(t)
+            if t ~= loadstring(base64decode(""))() then GZ.targetEgg = t end
+        end)
+        Owner:AddButton(loadstring(base64decode("QnV5IEVnZyAxeA=="))(), function()
+            local eName = (eggInputBox.Text ~= loadstring(base64decode(""))() and eggInputBox.Text) or GZ.targetEgg
+            buyEgg(eName or loadstring(base64decode("SnVuZ2xlIEVnZw=="))())
+        end)
+        Owner:AddButton(loadstring(base64decode("QnV5IE11c2NsZSBLaW5nIEVnZw=="))(), function() buyEgg(loadstring(base64decode("TXVzY2xlIEtpbmcgRWdn"))()) end)
+        Owner:AddToggle(loadstring(base64decode("QXV0byBCdXkgRWdn"))(), GZ.autoBuyEgg, function(v)
+            GZ.autoBuyEgg = v
+            if v then
+                task.spawn(function()
+                    while GZ.autoBuyEgg and GZ.running do
+                        local eName = (eggInputBox.Text ~= loadstring(base64decode(""))() and eggInputBox.Text) or GZ.targetEgg
+                        buyEgg(eName or loadstring(base64decode("SnVuZ2xlIEVnZw=="))())
+                        task.wait(0.2)
+                    end
+                end)
+            end
+        end)
+
+        Owner:AddLabel(loadstring(base64decode("cGxheWVycw=="))())
+        local userCountLbl = Owner:AddLabel(loadstring(base64decode("c2Nhbm5pbmcuLi4="))(), Theme.On)
+        local playerListLbl = Owner:AddMultiLabel(loadstring(base64decode("Li4u"))(), Theme.Sub)
+
+        local function refreshPlayers()
+            local totalPlayers = #Players:GetPlayers()
+            local scriptUsers = {}
+            local regularPlayers = {}
+
+            for _, p in pairs(Players:GetPlayers()) do
+                local pIsOwner = OwnersList[p.Name] or p:GetAttribute(loadstring(base64decode("R1pDbGFuT3duZXI="))())
+                if pIsOwner then
+                    table.insert(scriptUsers, p.Name .. loadstring(base64decode("IChvd25lcik="))())
+                elseif p:GetAttribute(loadstring(base64decode("R1pDbGFuVXNlcg=="))()) then
+                    table.insert(scriptUsers, p.Name .. loadstring(base64decode("ICh1c2VyKQ=="))())
+                else
+                    table.insert(regularPlayers, p.Name)
+                end
+            end
+
+            userCountLbl.Text = string.format(loadstring(base64decode("c2NyaXB0IHVzZXJzOiAlZC8lZA=="))(), #scriptUsers, totalPlayers)
+            local str = loadstring(base64decode("c2NyaXB0IHVzZXJzOlxu"))() .. (#scriptUsers > 0 and table.concat(scriptUsers, loadstring(base64decode("XG4="))()) or loadstring(base64decode("bm9uZQ=="))())
+            if #regularPlayers > 0 then
+                str = str .. loadstring(base64decode("XG5cbm90aGVyczog"))() .. table.concat(regularPlayers, loadstring(base64decode("LCA="))())
+            end
+            playerListLbl.Text = str
+        end
+
+        Owner:AddButton(loadstring(base64decode("UmVmcmVzaA=="))(), function() refreshPlayers() end)
+
+        task.spawn(function()
+            while GZ.running do
+                pcall(refreshPlayers)
+                task.wait(5)
+            end
+        end)
+    end
+
+    ----------------------------------------------------------------
+    -- farming (rebirth + utility + buyer + brawl)
+    ----------------------------------------------------------------
+    local Farm = tabs[loadstring(base64decode("RmFybWluZw=="))()]
+    Farm:AddLabel(loadstring(base64decode("ZmFybWluZw=="))(), Theme.Accent)
+    Farm:AddToggle(loadstring(base64decode("QXV0byBSZXA="))(), GZ.autoRep, function(v)
+        GZ.autoRep = v
+        if v then task.spawn(function() while GZ.autoRep and GZ.running do fireRep() task.wait(0.01) end end) end
+    end)
+    Farm:AddToggle(loadstring(base64decode("QXV0byBQdW5jaA=="))(), GZ.autoPunch, function(v)
+        GZ.autoPunch = v
+        if v then task.spawn(function() while GZ.autoPunch and GZ.running do firePunch(loadstring(base64decode("cmlnaHRIYW5k"))()) task.wait(0.05) firePunch(loadstring(base64decode("bGVmdEhhbmQ="))()) task.wait(0.05) end end) end
+    end)
+    Farm:AddToggle(loadstring(base64decode("RmFzdCBQdW5jaA=="))(), GZ.fastPunch, function(v)
+        GZ.fastPunch = v
+        if v then task.spawn(function() while GZ.fastPunch and GZ.running do firePunch(loadstring(base64decode("cmlnaHRIYW5k"))()) firePunch(loadstring(base64decode("bGVmdEhhbmQ="))()) task.wait(0.01) end end) end
+    end)
+
+    Farm:AddLabel(loadstring(base64decode("cmViaXJ0aA=="))(), Theme.Accent)
+    Farm:AddToggle(loadstring(base64decode("QXV0byBSZWJpcnRo"))(), GZ.autoRebirth, function(v)
+        GZ.autoRebirth = v
+        if v then task.spawn(function() while GZ.autoRebirth and GZ.running do doRebirth() task.wait(0.1) end end) end
+    end)
+    local targetRebirthInput = Farm:AddInput(loadstring(base64decode("VGFyZ2V0"))(), loadstring(base64decode("MTAwMA=="))(), function(t)
+        GZ.rebirthTarget = tonumber(t)
+    end)
+    local rebirthAtTargetToggle
+    rebirthAtTargetToggle = Farm:AddToggle(loadstring(base64decode("UmViaXJ0aCBBdCBUYXJnZXQ="))(), false, function(v)
+        GZ.rebirthAtTarget = v
+        if v then
+            task.spawn(function()
+                while GZ.rebirthAtTarget and GZ.running do
+                    local ls = player:FindFirstChild(loadstring(base64decode("bGVhZGVyc3RhdHM="))())
+                    local rb = ls and ls:FindFirstChild(loadstring(base64decode("UmViaXJ0aHM="))())
+                    local target = tonumber(targetRebirthInput.Text) or GZ.rebirthTarget
+                    if rb and target and rb.Value >= target then break end
+                    doRebirth()
+                    task.wait(0.1)
+                end
+                GZ.rebirthAtTarget = false
+                if rebirthAtTargetToggle then rebirthAtTargetToggle:Set(false) end
+            end)
+        end
+    end)
+
+    Farm:AddLabel(loadstring(base64decode("dXRpbGl0eQ=="))(), Theme.Accent)
+    Farm:AddToggle(loadstring(base64decode("QXV0byBTaXplIDE="))(), GZ.sizeOne, function(v)
+        GZ.sizeOne = v
+        if v then
+            task.spawn(function()
+                while GZ.sizeOne and GZ.running do
+                    if changeSpeedSizeRemote then pcall(function() changeSpeedSizeRemote:InvokeServer(loadstring(base64decode("Y2hhbmdlU2l6ZQ=="))(), 1) end) end
+                    task.wait(0.5)
+                end
+            end)
+        end
+    end)
+    Farm:AddToggle(loadstring(base64decode("TG9jayBQb3NpdGlvbg=="))(), GZ.lockPos, function(v)
+        GZ.lockPos = v
+        if GZ._lockConn then GZ._lockConn:Disconnect() GZ._lockConn = nil end
+        if v and player.Character and player.Character:FindFirstChild(loadstring(base64decode("SHVtYW5vaWRSb290UGFydA=="))()) then
+            local lockCf = player.Character.HumanoidRootPart.CFrame
+            GZ._lockConn = RunService.Heartbeat:Connect(function()
+                if GZ.lockPos and player.Character and player.Character:FindFirstChild(loadstring(base64decode("SHVtYW5vaWRSb290UGFydA=="))()) then
+                    player.Character.HumanoidRootPart.CFrame = lockCf
+                end
+            end)
+        end
+    end)
+
+    Farm:AddLabel(loadstring(base64decode("YnV5IHBldA=="))(), Theme.Accent)
+    local petStatusLbl = Farm:AddLabel(loadstring(base64decode(""))(), Theme.Text)
+    local petResetLbl = Farm:AddLabel(loadstring(base64decode(""))(), Theme.Sub)
+
+    local function updatePetStatus()
+        if isOwner then
+            petStatusLbl.Text = loadstring(base64decode("b3duZXIgKHVubGltaXRlZCk="))()
+            petStatusLbl.TextColor3 = Theme.On
+            petResetLbl.Text = loadstring(base64decode(""))()
+        else
+            petStatusLbl.Text = loadstring(base64decode("Ym91Z2h0OiA="))() .. GZ.petData.count .. loadstring(base64decode("Lw=="))() .. PET_WEEKLY_LIMIT
+            petStatusLbl.TextColor3 = (GZ.petData.count >= PET_WEEKLY_LIMIT) and Theme.Accent or Theme.Text
+            petResetLbl.Text = loadstring(base64decode("cmVzZXQgaW46IA=="))() .. getResetTimeString()
+        end
+    end
+
+    updatePetStatus()
+    task.spawn(function()
+        while GZ.running do
+            pcall(updatePetStatus)
+            task.wait(5)
+        end
+    end)
+
+    local petInputBox = Farm:AddInput(loadstring(base64decode("UGV0"))(), loadstring(base64decode("TXVzY2xlIEtpbmc="))(), function(t) if t ~= loadstring(base64decode(""))() then GZ.selectedPet = t end end)
+    Farm:AddButton(loadstring(base64decode("QnV5IDF4"))(), function()
+        local pName = (petInputBox.Text ~= loadstring(base64decode(""))() and petInputBox.Text) or GZ.selectedPet
+        executeBuy(pName)
+        updatePetStatus()
+    end)
+    local autoBuyToggle
+    autoBuyToggle = Farm:AddToggle(loadstring(base64decode("QXV0byBCdXk="))(), GZ.autoPet, function(v)
+        GZ.autoPet = v
+        if v then
+            task.spawn(function()
+                while GZ.autoPet and GZ.running do
+                    if not canBuyPet() then break end
+                    local pName = (petInputBox.Text ~= loadstring(base64decode(""))() and petInputBox.Text) or GZ.selectedPet
+                    executeBuy(pName)
+                    updatePetStatus()
+                    task.wait(0.5)
+                end
+                GZ.autoPet = false
+                if autoBuyToggle then autoBuyToggle:Set(false) end
+                updatePetStatus()
+            end)
+        end
+    end)
+    Farm:AddButton(loadstring(base64decode("RXF1aXAgQXBleCBPdmVybG9yZCB4OA=="))(), function() for i = 1, 8 do equipPetByName(loadstring(base64decode("QXBleCBPdmVybG9yZA=="))()) task.wait(0.05) end end)
+
+    Farm:AddLabel(loadstring(base64decode("YnJhd2w="))(), Theme.Accent)
+    Farm:AddToggle(loadstring(base64decode("QXV0byBKb2luIEJyYXds"))(), GZ.autoJoinBrawl, function(v)
+        GZ.autoJoinBrawl = v
+        if v then
+            task.spawn(function()
+                while GZ.autoJoinBrawl and GZ.running do
+                    pcall(function()
+                        local pg = player:FindFirstChild(loadstring(base64decode("UGxheWVyR3Vp"))())
+                        if pg then
+                            for _, obj in pairs(pg:GetDescendants()) do
+                                if obj:IsA(loadstring(base64decode("VGV4dEJ1dHRvbg=="))()) and obj.Visible
+                                and (obj.Text:upper():match(loadstring(base64decode("XllFUyQ="))()) or obj.Name:upper() == loadstring(base64decode("WUVT"))()) then
+                                    local clicked = false
+                                    pcall(function()
+                                        if typeof(getconnections) == loadstring(base64decode("ZnVuY3Rpb24="))() then
+                                            for _, c in pairs(getconnections(obj.Activated)) do
+                                                c:Fire()
+                                                clicked = true
+                                            end
+                                        end
+                                    end)
+                                    if not clicked then
+                                        pcall(function() obj.Activated:Fire() end)
+                                    end
+                                    break
+                                end
+                            end
+                        end
+                    end)
+                    task.wait(1.5)
+                end
+            end)
+        end
+    end)
+
+    ----------------------------------------------------------------
+    -- boss (tinggi macam versi mantap + lock-on + smart dodge)
+    ----------------------------------------------------------------
+    local Boss = tabs[loadstring(base64decode("Qm9zcw=="))()]
+    Boss:AddLabel(loadstring(base64decode("Ym9zcw=="))(), Theme.Accent)
+
+    local bossStatusLbl = Boss:AddLabel(loadstring(base64decode("Ym9zczogc2Nhbm5pbmcuLi4="))(), Theme.Sub)
+    local fightStatusLbl = Boss:AddLabel(loadstring(base64decode("ZmlnaHRpbmc6IG5vbmU="))(), Theme.Sub)
+    local dodgeStatusLbl = Boss:AddLabel(loadstring(base64decode("ZG9kZ2U6IG9mZg=="))(), Theme.Sub)
+
+    task.spawn(function()
+        while GZ.running do
+            pcall(function()
+                local model, name, hp, maxHp = getBossInfo()
+                if model then
+                    if hp and maxHp and maxHp > 0 then
+                        bossStatusLbl.Text = loadstring(base64decode("Ym9zczog"))() .. name .. loadstring(base64decode("ICg="))() .. fmt(hp) .. loadstring(base64decode("Lw=="))() .. fmt(maxHp) .. loadstring(base64decode("IGhwKQ=="))()
+                    else
+                        bossStatusLbl.Text = loadstring(base64decode("Ym9zczog"))() .. name
+                    end
+                    bossStatusLbl.TextColor3 = Theme.On
+                    if GZ.autoTpBoss or GZ.orbitBoss or GZ.autoHitBoss then
+                        fightStatusLbl.Text = loadstring(base64decode("ZmlnaHRpbmc6IA=="))() .. name
+                        fightStatusLbl.TextColor3 = Theme.Accent
+                    else
+                        fightStatusLbl.Text = loadstring(base64decode("ZmlnaHRpbmc6IG5vbmU="))()
+                        fightStatusLbl.TextColor3 = Theme.Sub
+                    end
+                else
+                    local nextTime = tonumber(Workspace:GetAttribute(ATTR_NEXT_TIME))
+                    if nextTime then
+                        local remain = math.max(0, math.floor(nextTime - Workspace:GetServerTimeNow()))
+                        bossStatusLbl.Text = string.format(loadstring(base64decode("Ym9zczogbmV4dCBpbiAlMDJkOiUwMmQ="))(), math.floor(remain / 60), remain % 60)
+                    else
+                        bossStatusLbl.Text = loadstring(base64decode("Ym9zczogbm90IHNwYXduZWQ="))()
+                    end
+                    bossStatusLbl.TextColor3 = Theme.Sub
+                    fightStatusLbl.Text = loadstring(base64decode("ZmlnaHRpbmc6IG5vbmU="))()
+                    fightStatusLbl.TextColor3 = Theme.Sub
+                end
+
+                if GZ.retreating then
+                    dodgeStatusLbl.Text = loadstring(base64decode("ZG9kZ2U6IGJhY2s="))()
+                    dodgeStatusLbl.TextColor3 = Theme.Accent
+                elseif GZ.dodging then
+                    dodgeStatusLbl.Text = loadstring(base64decode("ZG9kZ2U6IHVw"))()
+                    dodgeStatusLbl.TextColor3 = Theme.Accent
+                elseif GZ.autoDodge or GZ.smartDodge then
+                    dodgeStatusLbl.Text = loadstring(base64decode("ZG9kZ2U6IHNhZmU="))()
+                    dodgeStatusLbl.TextColor3 = Theme.Sub
+                else
+                    dodgeStatusLbl.Text = loadstring(base64decode("ZG9kZ2U6IG9mZg=="))()
+                    dodgeStatusLbl.TextColor3 = Theme.Sub
+                end
+            end)
+            task.wait(1)
+        end
+    end)
+
+    -- posisi BELAKANG boss yang SEBENAR (model diputar 180, jadi belakang = -Z / LookVector)
+    local function behindCF(bp, dist)
+        return bp.CFrame * CFrame.new(0, 2, -dist)
+    end
+
+    -- CF selamat untuk dodge: lari ke arah BERTENTANGAN dengan serangan
+    -- (guna BossAttackCFrame kalau ada, kalau tak guna belakang visual boss)
+    local function safeDodgeCF(bp, model, dist)
+        local dir = nil
+        if model then
+            local atkCf = model:GetAttribute(ATTACK_CFRAME_ATTR)
+            if typeof(atkCf) == loadstring(base64decode("Q0ZyYW1l"))() then
+                local away = bp.Position - atkCf.Position
+                local flat = Vector3.new(away.X, 0, away.Z)
+                if flat.Magnitude > 2 then
+                    dir = flat.Unit
+                end
+            end
+        end
+        if not dir then
+            dir = bp.CFrame.LookVector -- belakang visual boss (sebab model diputar 180)
+        end
+        local pos = bp.Position + dir * dist
+        return CFrame.lookAt(pos, Vector3.new(bp.Position.X, pos.Y, bp.Position.Z))
+    end
+
+    local function tpToBoss()
+        local part = getBossPart()
+        local hrp = player.Character and player.Character:FindFirstChild(loadstring(base64decode("SHVtYW5vaWRSb290UGFydA=="))())
+        if part and hrp then
+            hrp.CFrame = behindCF(part, 10)
+            return true
+        end
+        return false
+    end
+
+    Boss:AddLabel(loadstring(base64decode("YXV0bw=="))(), Theme.Accent)
+
+    -- AUTO TP TO BOSS (SMOOTH LOCK-ON):
+    -- Heartbeat lerp, melekat BELAKANG boss & follow boss bila dia bergerak/pusing
+    GZ.autoTpBoss = false
+    Boss:AddToggle(loadstring(base64decode("QXV0byBUZWxlcG9ydCBUbyBCb3Nz"))(), false, function(v)
+        GZ.autoTpBoss = v
+        if GZ._autoTpConn then
+            GZ._autoTpConn:Disconnect()
+            GZ._autoTpConn = nil
+        end
+        if v then
+            GZ._autoTpConn = RunService.Heartbeat:Connect(function()
+                if not GZ.autoTpBoss then return end
+                if GZ.dodging or GZ.retreating or GZ.orbitBoss then return end
+                local part = getBossPart()
+                local hrp = player.Character and player.Character:FindFirstChild(loadstring(base64decode("SHVtYW5vaWRSb290UGFydA=="))())
+                if part and hrp then
+                    local target = behindCF(part, 10)
+                    pcall(function()
+                        hrp.CFrame = hrp.CFrame:Lerp(target, 0.25)
+                        hrp.AssemblyLinearVelocity = Vector3.zero
+                    end)
+                end
+            end)
+        end
+    end)
+
+    Boss:AddButton(loadstring(base64decode("VGVsZXBvcnQgVG8gQm9zcw=="))(), function()
+        if not tpToBoss() then
+            bossStatusLbl.Text = loadstring(base64decode("Ym9zczogbm90IHNwYXduZWQ="))()
+            bossStatusLbl.TextColor3 = Theme.Accent
+        end
+    end)
+
+    Boss:AddToggle(loadstring(base64decode("SGlkZSBCb3Nz"))(), GZ.hideBoss, function(v)
+        GZ.hideBoss = v
+        if v then
+            task.spawn(function()
+                while GZ.hideBoss and GZ.running do
+                    pcall(function()
+                        local model = findBossModel()
+                        if model then
+                            for _, obj in pairs(model:GetDescendants()) do
+                                if obj:IsA(loadstring(base64decode("QmFzZVBhcnQ="))()) then
+                                    obj.LocalTransparencyModifier = 1
+                                    obj.CastShadow = false
+                                elseif obj:IsA(loadstring(base64decode("RGVjYWw="))()) then
+                                    obj.Transparency = 1
+                                elseif obj:IsA(loadstring(base64decode("UGFydGljbGVFbWl0dGVy"))()) or obj:IsA(loadstring(base64decode("VHJhaWw="))()) or obj:IsA(loadstring(base64decode("QmVhbQ=="))())
+                                or obj:IsA(loadstring(base64decode("RmlyZQ=="))()) or obj:IsA(loadstring(base64decode("U21va2U="))()) or obj:IsA(loadstring(base64decode("U3BhcmtsZXM="))()) then
+                                    obj.Enabled = false
+                                elseif obj:IsA(loadstring(base64decode("U291bmQ="))()) then
+                                    obj.Volume = 0
+                                end
+                            end
+                        end
+                    end)
+                    task.wait(1)
+                end
+            end)
+        end
+    end)
+
+    Boss:AddLabel(loadstring(base64decode("YXV0byBkb2RnZQ=="))(), Theme.Accent)
+
+    Boss:AddInput(loadstring(base64decode("RG9kZ2UgSGVpZ2h0"))(), loadstring(base64decode("MTMw"))(), function(t)
+        GZ.dodgeHeight = math.clamp(tonumber(t) or 130, 20, 500)
+    end)
+    Boss:AddInput(loadstring(base64decode("UmV0dXJuIERlbGF5"))(), loadstring(base64decode("MQ=="))(), function(t)
+        GZ.returnDelay = math.clamp(tonumber(t) or 1, 0.5, 10)
+    end)
+    Boss:AddInput(loadstring(base64decode("RG9kZ2UgVGltZXI="))(), loadstring(base64decode("NQ=="))(), function(t)
+        GZ.dodgeInterval = math.clamp(tonumber(t) or 5, 2, 60)
+    end)
+    Boss:AddInput(loadstring(base64decode("QmFjayBEaXN0YW5jZQ=="))(), loadstring(base64decode("NjA="))(), function(t)
+        GZ.dodgeBack = math.clamp(tonumber(t) or 60, 15, 120)
+    end)
+
+    -- auto dodge (timer): naik tinggi setiap X saat
+    Boss:AddToggle(loadstring(base64decode("QXV0byBEb2RnZQ=="))(), GZ.autoDodge, function(v)
+        GZ.autoDodge = v
+        if v then
+            task.spawn(function()
+                while GZ.autoDodge and GZ.running do
+                    local waited = 0
+                    local interval = GZ.dodgeInterval or 5
+                    while GZ.autoDodge and GZ.running and waited < interval do
+                        task.wait(0.1)
+                        waited = waited + 0.1
+                    end
+                    if not GZ.autoDodge then break end
+
+                    local bp = getBossPart()
+                    if bp then
+                        GZ.dodging = true
+                        local hrp = player.Character and player.Character:FindFirstChild(loadstring(base64decode("SHVtYW5vaWRSb290UGFydA=="))())
+                        if hrp then
+                            pcall(function()
+                                hrp.CFrame = CFrame.new(bp.Position + Vector3.new(0, GZ.dodgeHeight or 130, 0))
+                                hrp.AssemblyLinearVelocity = Vector3.zero
+                            end)
+
+                            local hold = 0
+                            local holdTime = GZ.returnDelay or 1
+                            while GZ.autoDodge and GZ.running and hold < holdTime do
+                                local b2 = getBossPart()
+                                local h2 = player.Character and player.Character:FindFirstChild(loadstring(base64decode("SHVtYW5vaWRSb290UGFydA=="))())
+                                if b2 and h2 then
+                                    pcall(function()
+                                        h2.CFrame = CFrame.new(b2.Position + Vector3.new(0, GZ.dodgeHeight or 130, 0))
+                                        h2.AssemblyLinearVelocity = Vector3.zero
+                                    end)
+                                end
+                                task.wait(0.1)
+                                hold = hold + 0.1
+                            end
+
+                            for i = 1, 10 do
+                                if not GZ.autoDodge then break end
+                                local b3 = getBossPart()
+                                local h3 = player.Character and player.Character:FindFirstChild(loadstring(base64decode("SHVtYW5vaWRSb290UGFydA=="))())
+                                if b3 and h3 then
+                                    local target = behindCF(b3, 10)
+                                    pcall(function()
+                                        h3.CFrame = h3.CFrame:Lerp(target, i / 10)
+                                        h3.AssemblyLinearVelocity = Vector3.zero
+                                    end)
+                                end
+                                task.wait(0.1)
+                            end
+
+                            if GZ.autoDodge then tpToBoss() end
+                        end
+                        GZ.dodging = false
+                    end
+                end
+                GZ.dodging = false
+            end)
+        else
+            GZ.dodging = false
+        end
+    end)
+
+    -- SMART DODGE (tinggi macam versi mantap):
+    -- kotak merah (Punch) -> glide MULUS ke arah BERTENTANGAN serangan
+    --   (BossAttackCFrame), 60 stud TINGGI searas boss -> kotak merah tak sampai
+    --   punch TERUS jalan sebab masih dalam jangkauan hit 90+
+    -- bulatan kuning (Stomp) -> glide LAJU ke ATAS boss, punch pause
+    -- balik ke boss pun glide mulus
+    Boss:AddToggle(loadstring(base64decode("U21hcnQgRG9kZ2U="))(), GZ.smartDodge, function(v)
+        GZ.smartDodge = v
+        if v then
+            task.spawn(function()
+                local lastSeq = nil
+                while GZ.smartDodge and GZ.running do
+                    task.wait(0.05) -- PENTING: yield supaya tak freeze
+
+                    local model = findBossModel()
+                    if model then
+                        local kind = model:GetAttribute(ATTACK_KIND_ATTR)
+                        local impact = tonumber(model:GetAttribute(ATTACK_IMPACT_ATTR))
+                        local seq = model:GetAttribute(ATTACK_SEQ_ATTR)
+                        local now = Workspace:GetServerTimeNow()
+
+                        if type(kind) == loadstring(base64decode("c3RyaW5n"))() and kind ~= loadstring(base64decode(""))() and impact
+                        and seq ~= lastSeq and now < impact + 0.5 then
+                            lastSeq = seq
+
+                            if kind == loadstring(base64decode("U3RvbXA="))() then
+                                -- bulatan kuning: glide LAJU naik ke atas boss
+                                GZ.dodging = true
+                                for i = 1, 6 do
+                                    if not GZ.smartDodge then break end
+                                    local b = getBossPart()
+                                    local h = player.Character and player.Character:FindFirstChild(loadstring(base64decode("SHVtYW5vaWRSb290UGFydA=="))())
+                                    if b and h then
+                                        pcall(function()
+                                            h.CFrame = h.CFrame:Lerp(CFrame.new(b.Position + Vector3.new(0, GZ.dodgeHeight or 130, 0)), i / 6)
+                                            h.AssemblyLinearVelocity = Vector3.zero
+                                        end)
+                                    end
+                                    task.wait(0.05)
+                                end
+                            else
+                                -- kotak merah: glide MULUS ke arah selamat TINGGI searas boss
+                                GZ.retreating = true
+                                for i = 1, 8 do
+                                    if not GZ.smartDodge then break end
+                                    local b = getBossPart()
+                                    local h = player.Character and player.Character:FindFirstChild(loadstring(base64decode("SHVtYW5vaWRSb290UGFydA=="))())
+                                    if b and h then
+                                        pcall(function()
+                                            h.CFrame = h.CFrame:Lerp(safeDodgeCF(b, model, GZ.dodgeBack or 60), i / 8)
+                                            h.AssemblyLinearVelocity = Vector3.zero
+                                        end)
+                                    end
+                                    task.wait(0.05)
+                                end
+                            end
+
+                            -- tunggu impact habis, kekal di posisi selamat (ikut boss kalau dia bergerak)
+                            while GZ.smartDodge and GZ.running and model.Parent do
+                                local now2 = Workspace:GetServerTimeNow()
+                                local imp2 = tonumber(model:GetAttribute(ATTACK_IMPACT_ATTR))
+                                if not imp2 or now2 > imp2 + 0.4 then break end
+
+                                local b2 = getBossPart()
+                                local h2 = player.Character and player.Character:FindFirstChild(loadstring(base64decode("SHVtYW5vaWRSb290UGFydA=="))())
+                                if b2 and h2 then
+                                    pcall(function()
+                                        if kind == loadstring(base64decode("U3RvbXA="))() then
+                                            h2.CFrame = CFrame.new(b2.Position + Vector3.new(0, GZ.dodgeHeight or 130, 0))
+                                        else
+                                            h2.CFrame = safeDodgeCF(b2, model, GZ.dodgeBack or 60)
+                                        end
+                                        h2.AssemblyLinearVelocity = Vector3.zero
+                                    end)
+                                end
+                                task.wait(0.05)
+                            end
+
+                            -- impact habis: glide MULUS balik ke belakang boss
+                            for i = 1, 8 do
+                                if not GZ.smartDodge then break end
+                                local b3 = getBossPart()
+                                local h3 = player.Character and player.Character:FindFirstChild(loadstring(base64decode("SHVtYW5vaWRSb290UGFydA=="))())
+                                if b3 and h3 then
+                                    pcall(function()
+                                        h3.CFrame = h3.CFrame:Lerp(behindCF(b3, 10), i / 8)
+                                        h3.AssemblyLinearVelocity = Vector3.zero
+                                    end)
+                                end
+                                task.wait(0.05)
+                            end
+                            if GZ.smartDodge then tpToBoss() end
+
+                            GZ.dodging = false
+                            GZ.retreating = false
+                        end
+                    end
+                end
+                GZ.dodging = false
+                GZ.retreating = false
+            end)
+        else
+            GZ.dodging = false
+            GZ.retreating = false
+        end
+    end)
+
+    Boss:AddLabel(loadstring(base64decode("YXR0YWNr"))(), Theme.Accent)
+
+    Boss:AddInput(loadstring(base64decode("T3JiaXQgU3BlZWQ="))(), loadstring(base64decode("NDA="))(), function(t)
+        GZ.orbitSpeed = math.clamp(tonumber(t) or 40, 5, 120)
+    end)
+    Boss:AddToggle(loadstring(base64decode("T3JiaXQgQm9zcw=="))(), GZ.orbitBoss, function(v)
+        GZ.orbitBoss = v
+        if v then
+            GZ.orbitAngle = GZ.orbitAngle or 0
+            task.spawn(function()
+                while GZ.orbitBoss and GZ.running do
+                    if not GZ.dodging and not GZ.retreating then
+                        local part = getBossPart()
+                        local hrp = player.Character and player.Character:FindFirstChild(loadstring(base64decode("SHVtYW5vaWRSb290UGFydA=="))())
+                        if part and hrp then
+                            GZ.orbitAngle = GZ.orbitAngle + math.rad(GZ.orbitSpeed or 40)
+                            local r = 10
+                            local bp = part.Position
+                            local pos = bp + Vector3.new(math.cos(GZ.orbitAngle) * r, 3, math.sin(GZ.orbitAngle) * r)
+                            pcall(function()
+                                hrp.CFrame = CFrame.lookAt(pos, Vector3.new(bp.X, pos.Y, bp.Z))
+                            end)
+                        end
+                    end
+                    RunService.Heartbeat:Wait()
+                end
+            end)
+        end
+    end)
+
+    -- remote punch: pause HANYA masa naik atas (Stomp dodge / Auto Dodge timer).
+    -- Masa mundur kotak merah (60 stud tinggi), masih dalam jangkauan -> punch terus jalan.
+    Boss:AddToggle(loadstring(base64decode("QXV0byBIaXQgQm9zcw=="))(), GZ.autoHitBoss, function(v)
+        GZ.autoHitBoss = v
+        if v then
+            task.spawn(function()
+                local cycle = 0
+                while GZ.autoHitBoss and GZ.running do
+                    if not GZ.dodging then
+                        local part = getBossPart()
+                        local ch = player.Character
+                        if part and ch then
+                            cycle = cycle + 1
+                            if cycle % 2 == 1 then
+                                local lh, rh = ch:FindFirstChild(loadstring(base64decode("TGVmdEhhbmQ="))()), ch:FindFirstChild(loadstring(base64decode("UmlnaHRIYW5k"))())
+                                if lh and rh then
+                                    pcall(function()
+                                        firetouchinterest(part, lh, 0)
+                                        firetouchinterest(part, rh, 0)
+                                        task.wait()
+                                        firetouchinterest(part, lh, 1)
+                                        firetouchinterest(part, rh, 1)
+                                    end)
+                                end
+                            end
+                            firePunch(loadstring(base64decode("cmlnaHRIYW5k"))())
+                            firePunch(loadstring(base64decode("bGVmdEhhbmQ="))())
+                        end
+                    end
+                    task.wait(MIN_HIT_INTERVAL)
+                end
+            end)
+        end
+    end)
+
+    ----------------------------------------------------------------
+    -- rocks (+ industrial gym rock + tp industrial rock)
+    ----------------------------------------------------------------
+    local INDUSTRIAL_ROCK_POS = Vector3.new(-4491.35107421875, 60.47393035888672, 5377.46142578125)
+
+    local Rocks = tabs[loadstring(base64decode("Um9ja3M="))()]
+    Rocks:AddLabel(loadstring(base64decode("cm9ja3M="))(), Theme.Accent)
+    local rockCfgs = {
+        {loadstring(base64decode("VGlueSBJc2xhbmQ="))(), 0}, {loadstring(base64decode("U3RhcnRlciBJc2xhbmQ="))(), 100}, {loadstring(base64decode("TGVnZW5kIEJlYWNo"))(), 5000},
+        {loadstring(base64decode("RnJvc3QgR3lt"))(), 150000}, {loadstring(base64decode("TXl0aGljYWwgR3lt"))(), 400000}, {loadstring(base64decode("RXRlcm5hbCBHeW0="))(), 750000},
+        {loadstring(base64decode("TGVnZW5kIEd5bQ=="))(), 1000000}, {loadstring(base64decode("TXVzY2xlIEtpbmcgR3lt"))(), 5000000}, {loadstring(base64decode("QW5jaWVudCBKdW5nbGU="))(), 10000000}
+    }
+    for _, r in ipairs(rockCfgs) do
+        Rocks:AddToggle(r[1], false, function(v)
+            GZ.autoFarmRock = v and r[1] or nil
+            if v then
+                task.spawn(function()
+                    local mf = Workspace:FindFirstChild(loadstring(base64decode("bWFjaGluZXNGb2xkZXI="))())
+                    while GZ.autoFarmRock == r[1] and GZ.running do
+                        if mf then
+                            for _, d in pairs(mf:GetDescendants()) do
+                                if d.Name == loadstring(base64decode("bmVlZGVkRHVyYWJpbGl0eQ=="))() and d.Value == r[2] then
+                                    local rp = d.Parent and d.Parent:FindFirstChild(loadstring(base64decode("Um9jaw=="))())
+                                    if rp and player.Character then
+                                        local hrp = player.Character:FindFirstChild(loadstring(base64decode("SHVtYW5vaWRSb290UGFydA=="))())
+                                        if hrp then hrp.CFrame = rp.CFrame * CFrame.new(0, 0, -3) end
+                                        local lh, rh = player.Character:FindFirstChild(loadstring(base64decode("TGVmdEhhbmQ="))()), player.Character:FindFirstChild(loadstring(base64decode("UmlnaHRIYW5k"))())
+                                        if lh and rh then
+                                            pcall(function()
+                                                firetouchinterest(rp, lh, 0) firetouchinterest(rp, rh, 0) task.wait()
+                                                firetouchinterest(rp, lh, 1) firetouchinterest(rp, rh, 1)
+                                            end)
+                                        end
+                                        fireRep()
+                                    end
+                                    break
+                                end
+                            end
+                        end
+                        task.wait(0.05)
+                    end
+                end)
+            end
+        end)
+    end
+
+    Rocks:AddLabel(loadstring(base64decode("aW5kdXN0cmlhbCBneW0="))(), Theme.Accent)
+    Rocks:AddButton(loadstring(base64decode("VGVsZXBvcnQgVG8gSW5kdXN0cmlhbCBSb2Nr"))(), function()
+        tpTo(INDUSTRIAL_ROCK_POS + Vector3.new(0, 2, 0))
+    end)
+    Rocks:AddToggle(loadstring(base64decode("SW5kdXN0cmlhbCBHeW0gUm9jaw=="))(), false, function(v)
+        GZ.autoFarmRock = v and loadstring(base64decode("SU5EVVNUUklBTA=="))() or nil
+        if v then
+            task.spawn(function()
+                local mf = Workspace:FindFirstChild(loadstring(base64decode("bWFjaGluZXNGb2xkZXI="))())
+                while GZ.autoFarmRock == loadstring(base64decode("SU5EVVNUUklBTA=="))() and GZ.running do
+                    if mf then
+                        local bestRock, bestDist = nil, math.huge
+                        for _, d in pairs(mf:GetDescendants()) do
+                            if d.Name == loadstring(base64decode("bmVlZGVkRHVyYWJpbGl0eQ=="))() and d.Parent then
+                                local rp = d.Parent:FindFirstChild(loadstring(base64decode("Um9jaw=="))())
+                                if rp then
+                                    local dist = (rp.Position - INDUSTRIAL_ROCK_POS).Magnitude
+                                    if dist < bestDist then
+                                        bestDist = dist
+                                        bestRock = rp
+                                    end
+                                end
+                            end
+                        end
+                        if bestRock and bestDist < 100 and player.Character then
+                            local hrp = player.Character:FindFirstChild(loadstring(base64decode("SHVtYW5vaWRSb290UGFydA=="))())
+                            if hrp then hrp.CFrame = bestRock.CFrame * CFrame.new(0, 0, -3) end
+                            local lh, rh = player.Character:FindFirstChild(loadstring(base64decode("TGVmdEhhbmQ="))()), player.Character:FindFirstChild(loadstring(base64decode("UmlnaHRIYW5k"))())
+                            if lh and rh then
+                                pcall(function()
+                                    firetouchinterest(bestRock, lh, 0) firetouchinterest(bestRock, rh, 0) task.wait()
+                                    firetouchinterest(bestRock, lh, 1) firetouchinterest(bestRock, rh, 1)
+                                end)
+                            end
+                            fireRep()
+                        end
+                    end
+                    task.wait(0.05)
+                end
+            end)
+        end
+    end)
+
+    ----------------------------------------------------------------
+    -- kill
+    ----------------------------------------------------------------
+    local Kill = tabs[loadstring(base64decode("S2lsbA=="))()]
+    Kill:AddLabel(loadstring(base64decode("a2lsbCBhdXJh"))(), Theme.Accent)
+    Kill:AddLabel(loadstring(base64decode("bm90ZToga2lsbCBhdXJhIC8gYnJpbmcgYWxsIGlzIGEgYml0IGJyb2tlbg=="))(), Color3.fromRGB(230, 170, 60))
+
+    Kill:AddToggle(loadstring(base64decode("S2lsbCBBdXJh"))(), GZ.autoKill, function(v)
+        GZ.autoKill = v
+        if v then
+            task.spawn(function()
+                while GZ.autoKill and GZ.running do
+                    local ch = player.Character
+                    if ch then
+                        local rh, lh = ch:FindFirstChild(loadstring(base64decode("UmlnaHRIYW5k"))()), ch:FindFirstChild(loadstring(base64decode("TGVmdEhhbmQ="))())
+                        if rh and lh then
+                            for _, p in pairs(Players:GetPlayers()) do
+                                if p ~= player and not GZ.killWhitelist[p.Name] and p.Character and p.Character:FindFirstChild(loadstring(base64decode("SHVtYW5vaWRSb290UGFydA=="))()) then
+                                    local hrp = p.Character.HumanoidRootPart
+                                    pcall(function()
+                                        firetouchinterest(hrp, rh, 1) firetouchinterest(hrp, lh, 1) task.wait()
+                                        firetouchinterest(hrp, rh, 0) firetouchinterest(hrp, lh, 0)
+                                    end)
+                                end
+                            end
+                        end
+                    end
+                    task.wait(0.05)
+                end
+            end)
+        end
+    end)
+
+    Kill:AddToggle(loadstring(base64decode("QnJpbmcgQWxs"))(), GZ.bringAll, function(v)
+        GZ.bringAll = v
+        if v then
+            task.spawn(function()
+                while GZ.bringAll and GZ.running do
+                    local ch = player.Character
+                    local myHrp = ch and ch:FindFirstChild(loadstring(base64decode("SHVtYW5vaWRSb290UGFydA=="))())
+                    if myHrp then
+                        local i = 0
+                        for _, p in pairs(Players:GetPlayers()) do
+                            if p ~= player and not GZ.killWhitelist[p.Name] then
+                                local hrp = p.Character and p.Character:FindFirstChild(loadstring(base64decode("SHVtYW5vaWRSb290UGFydA=="))())
+                                if hrp then
+                                    i = i + 1
+                                    pcall(function()
+                                        hrp.CFrame = myHrp.CFrame * CFrame.new(0, 0, -(3 + (i - 1) * 4))
+                                    end)
+                                end
+                            end
+                        end
+                    end
+                    task.wait(0.15)
+                end
+            end)
+        end
+    end)
+
+    Kill:AddInput(loadstring(base64decode("SGl0Ym94IFNpemU="))(), loadstring(base64decode("NDA="))(), function(t)
+        GZ.hitboxSize = tonumber(t) or 40
+    end)
+    Kill:AddToggle(loadstring(base64decode("QmlnIEhpdGJveA=="))(), GZ.bigHitbox, function(v)
+        GZ.bigHitbox = v
+        if v then
+            task.spawn(function()
+                while GZ.bigHitbox and GZ.running do
+                    for _, p in pairs(Players:GetPlayers()) do
+                        if p ~= player then
+                            local hrp = p.Character and p.Character:FindFirstChild(loadstring(base64decode("SHVtYW5vaWRSb290UGFydA=="))())
+                            if hrp then
+                                pcall(function()
+                                    if not GZ._origHitbox[hrp] then GZ._origHitbox[hrp] = hrp.Size end
+                                    local s = GZ.hitboxSize or 40
+                                    hrp.Size = Vector3.new(s, s, s)
+                                    hrp.CanCollide = false
+                                    hrp.Massless = true
+                                    hrp.Transparency = 1
+                                end)
+                            end
+                        end
+                    end
+                    task.wait(0.5)
+                end
+                for hrp, size in pairs(GZ._origHitbox) do
+                    pcall(function()
+                        if hrp and hrp.Parent then hrp.Size = size end
+                    end)
+                end
+                GZ._origHitbox = setmetatable({}, { __mode = loadstring(base64decode("aw=="))() })
+            end)
+        end
+    end)
+
+    Kill:AddToggle(loadstring(base64decode("SGlkZSBQbGF5ZXJz"))(), GZ.hidePlayers, function(v)
+        GZ.hidePlayers = v
+        if v then
+            task.spawn(function()
+                while GZ.hidePlayers and GZ.running do
+                    for _, p in pairs(Players:GetPlayers()) do
+                        if p ~= player and p.Character then
+                            for _, obj in pairs(p.Character:GetDescendants()) do
+                                if obj:IsA(loadstring(base64decode("QmFzZVBhcnQ="))()) then
+                                    obj.LocalTransparencyModifier = 1
+                                    obj.CastShadow = false
+                                elseif obj:IsA(loadstring(base64decode("RGVjYWw="))()) then
+                                    obj.Transparency = 1
+                                elseif obj:IsA(loadstring(base64decode("UGFydGljbGVFbWl0dGVy"))()) or obj:IsA(loadstring(base64decode("VHJhaWw="))()) or obj:IsA(loadstring(base64decode("QmVhbQ=="))())
+                                or obj:IsA(loadstring(base64decode("RmlyZQ=="))()) or obj:IsA(loadstring(base64decode("U21va2U="))()) or obj:IsA(loadstring(base64decode("U3BhcmtsZXM="))()) then
+                                    obj.Enabled = false
+                                elseif obj:IsA(loadstring(base64decode("U291bmQ="))()) then
+                                    obj.Volume = 0
+                                end
+                            end
+                        end
+                    end
+                    task.wait(0.5)
+                end
+            end)
+        end
+    end)
+
+    Kill:AddLabel(loadstring(base64decode("d2hpdGVsaXN0"))(), Theme.Accent)
+    local killDropdown = Kill:AddDropdown(loadstring(base64decode("UGxheWVy"))(), function(name)
+        -- selection only, applied with the buttons below
+    end)
+    Kill:AddButton(loadstring(base64decode("QWRkIFRvIFdoaXRlbGlzdA=="))(), function()
+        local name = killDropdown.Get()
+        if name then GZ.killWhitelist[name] = true end
+    end)
+    Kill:AddButton(loadstring(base64decode("UmVtb3ZlIEZyb20gV2hpdGVsaXN0"))(), function()
+        local name = killDropdown.Get()
+        if name then GZ.killWhitelist[name] = nil end
+    end)
+    local whitelistLbl = Kill:AddMultiLabel(loadstring(base64decode("d2hpdGVsaXN0OiAobm9uZSk="))(), Theme.Sub)
+    task.spawn(function()
+        while GZ.running do
+            pcall(function()
+                local names = {}
+                for n in pairs(GZ.killWhitelist) do table.insert(names, n) end
+                whitelistLbl.Text = loadstring(base64decode("d2hpdGVsaXN0OiA="))() .. (#names > 0 and table.concat(names, loadstring(base64decode("LCA="))()) or loadstring(base64decode("KG5vbmUp"))())
+            end)
+            task.wait(2)
+        end
+    end)
+
+    ----------------------------------------------------------------
+    -- gifts (dropdown target)
+    ----------------------------------------------------------------
+    local Gifts = tabs[loadstring(base64decode("R2lmdHM="))()]
+    Gifts:AddLabel(loadstring(base64decode("Z2lmdA=="))(), Theme.Accent)
+    local giftDropdown = Gifts:AddDropdown(loadstring(base64decode("VGFyZ2V0"))(), function(name)
+        GZ.giftTarget = name
+    end)
+    Gifts:AddButton(loadstring(base64decode("U2VuZCBQcm90ZWluIEVnZw=="))(), function()
+        local targetName = giftDropdown.Get() or GZ.giftTarget
+        local t = targetName and Players:FindFirstChild(targetName)
+        if t and giftRemote and player:FindFirstChild(loadstring(base64decode("Y29uc3VtYWJsZXNGb2xkZXI="))()) then
+            local egg = player.consumablesFolder:FindFirstChild(loadstring(base64decode("UHJvdGVpbiBFZ2c="))())
+            if egg then pcall(function() giftRemote:InvokeServer(loadstring(base64decode("Z2lmdFJlcXVlc3Q="))(), t, egg) end) end
+        end
+    end)
+
+    ----------------------------------------------------------------
+    -- teleport
+    ----------------------------------------------------------------
+    local Teleport = tabs[loadstring(base64decode("VGVsZXBvcnQ="))()]
+    Teleport:AddLabel(loadstring(base64decode("aXNsYW5kcw=="))(), Theme.Accent)
+    local locs = {
+        {loadstring(base64decode("U3Bhd24="))(), Vector3.new(2, 8, 115)}, {loadstring(base64decode("U2VjcmV0IEFyZWE="))(), Vector3.new(1947, 2, 6191)},
+        {loadstring(base64decode("VGlueSBJc2xhbmQ="))(), Vector3.new(-34, 7, 1903)}, {loadstring(base64decode("RnJvemVuIElzbGFuZA=="))(), Vector3.new(-2600, 3, -404)},
+        {loadstring(base64decode("TXl0aGljYWwgSXNsYW5k"))(), Vector3.new(2255, 7, 1071)}, {loadstring(base64decode("SGVsbCBJc2xhbmQ="))(), Vector3.new(-6768, 7, -1287)},
+        {loadstring(base64decode("TGVnZW5kIElzbGFuZA=="))(), Vector3.new(4604, 991, -3887)}, {loadstring(base64decode("TXVzY2xlIEtpbmcgSXNsYW5k"))(), Vector3.new(-8646, 17, -5738)},
+        {loadstring(base64decode("SnVuZ2xlIElzbGFuZA=="))(), Vector3.new(-8659, 6, 2384)},
+        {loadstring(base64decode("SW5kdXN0cmlhbCBHeW0="))(), Vector3.new(-5496.21484375, 60.47392272949219, 4956.3935546875)}
+    }
+    for _, l in ipairs(locs) do Teleport:AddButton(l[1], function() tpTo(l[2]) end) end
+
+    ----------------------------------------------------------------
+    -- stats (current + gained)
+    ----------------------------------------------------------------
+    local StatsTab = tabs[loadstring(base64decode("U3RhdHM="))()]
+    StatsTab:AddLabel(loadstring(base64decode("c3RhdHM="))(), Theme.Accent)
+    local timeLbl = StatsTab:AddLabel(loadstring(base64decode("dGltZTogMGQgMGggMG0gMHM="))())
+
+    StatsTab:AddLabel(loadstring(base64decode("Y3VycmVudA=="))(), Theme.Text)
+    local strNowLbl = StatsTab:AddLabel(loadstring(base64decode("c3RyZW5ndGg6IC0="))(), Theme.On)
+    local durNowLbl = StatsTab:AddLabel(loadstring(base64decode("ZHVyYWJpbGl0eTogLQ=="))(), Theme.On)
+    local rbNowLbl = StatsTab:AddLabel(loadstring(base64decode("cmViaXJ0aHM6IC0="))(), Theme.On)
+
+    StatsTab:AddLabel(loadstring(base64decode("Z2FpbmVk"))(), Theme.Text)
+    local strGainLbl = StatsTab:AddLabel(loadstring(base64decode("c3RyZW5ndGg6ICsw"))(), Theme.Sub)
+    local durGainLbl = StatsTab:AddLabel(loadstring(base64decode("ZHVyYWJpbGl0eTogKzA="))(), Theme.Sub)
+    local rbGainLbl = StatsTab:AddLabel(loadstring(base64decode("cmViaXJ0aHM6ICsw"))(), Theme.Sub)
+
+    task.spawn(function()
+        local start = tick()
+        local ls = player:WaitForChild(loadstring(base64decode("bGVhZGVyc3RhdHM="))(), 15)
+        local sStat = ls and ls:WaitForChild(loadstring(base64decode("U3RyZW5ndGg="))(), 10)
+        local dStat = ls and ls:WaitForChild(loadstring(base64decode("RHVyYWJpbGl0eQ=="))(), 10)
+        local rStat = ls and ls:WaitForChild(loadstring(base64decode("UmViaXJ0aHM="))(), 10)
+        local iS = sStat and sStat.Value or 0
+        local iD = dStat and dStat.Value or 0
+        local iR = rStat and rStat.Value or 0
+        while GZ.running do
+            local el = tick() - start
+            local cS = sStat and sStat.Value or 0
+            local cD = dStat and dStat.Value or 0
+            local cR = rStat and rStat.Value or 0
+            timeLbl.Text = string.format(loadstring(base64decode("dGltZTogJWRkICVkaCAlZG0gJWRz"))(),
+                math.floor(el / 86400), math.floor((el % 86400) / 3600),
+                math.floor((el % 3600) / 60), math.floor(el % 60))
+            strNowLbl.Text = loadstring(base64decode("c3RyZW5ndGg6IA=="))() .. fmt(cS)
+            durNowLbl.Text = loadstring(base64decode("ZHVyYWJpbGl0eTog"))() .. fmt(cD)
+            rbNowLbl.Text = loadstring(base64decode("cmViaXJ0aHM6IA=="))() .. fmt(cR)
+            strGainLbl.Text = loadstring(base64decode("c3RyZW5ndGg6ICs="))() .. fmt(cS - iS)
+            durGainLbl.Text = loadstring(base64decode("ZHVyYWJpbGl0eTogKw=="))() .. fmt(cD - iD)
+            rbGainLbl.Text = loadstring(base64decode("cmViaXJ0aHM6ICs="))() .. fmt(cR - iR)
+            task.wait(1)
+        end
+    end)
+
+    ----------------------------------------------------------------
+    -- misc
+    ----------------------------------------------------------------
+    local Misc = tabs[loadstring(base64decode("TWlzYw=="))()]
+    Misc:AddLabel(loadstring(base64decode("bWlzYw=="))(), Theme.Accent)
+    Misc:AddToggle(loadstring(base64decode("QW50aSBMYWc="))(), GZ.antiLag, function(v)
+        GZ.antiLag = v
+        if v then
+            Lighting.GlobalShadows = false
+            Lighting.Brightness = 2
+            Lighting.FogEnd = 9e9
+            pcall(function() settings().Rendering.QualityLevel = 1 end)
+            for _, obj in pairs(Workspace:GetDescendants()) do
+                if obj:IsA(loadstring(base64decode("UGFydGljbGVFbWl0dGVy"))()) or obj:IsA(loadstring(base64decode("VHJhaWw="))()) or obj:IsA(loadstring(base64decode("QmVhbQ=="))())
+                or obj:IsA(loadstring(base64decode("RmlyZQ=="))()) or obj:IsA(loadstring(base64decode("U21va2U="))()) or obj:IsA(loadstring(base64decode("U3BhcmtsZXM="))()) then
+                    obj.Enabled = false
+                elseif obj:IsA(loadstring(base64decode("QmFzZVBhcnQ="))()) then
+                    obj.Material = Enum.Material.SmoothPlastic
+                    obj.CastShadow = false
+                end
+            end
+        else
+            Lighting.GlobalShadows = true
+        end
+    end)
+    Misc:AddToggle(loadstring(base64decode("QW50aSBBRks="))(), GZ.antiAfk, function(v)
+        GZ.antiAfk = v
+        if v and not GZ._afkConn then
+            GZ._afkConn = player.Idled:Connect(function()
+                if GZ.antiAfk then
+                    VirtualUser:Button2Down(Vector2.new(), Workspace.CurrentCamera.CFrame)
+                    task.wait(1)
+                    VirtualUser:Button2Up(Vector2.new(), Workspace.CurrentCamera.CFrame)
+                end
+            end)
+        end
+    end)
+
+    ----------------------------------------------------------------
+    -- credits
+    ----------------------------------------------------------------
+    local Credits = tabs[loadstring(base64decode("Q3JlZGl0cw=="))()]
+    Credits:AddLabel(loadstring(base64decode("R1pzY3JpcHQ="))(), Theme.Accent)
+    Credits:AddLabel(loadstring(base64decode("bWFkZSBieSBSb3pvR1o="))())
+    Credits:AddLabel(loadstring(base64decode("b3duZXI6IFJvem9sZWU1"))())
+    Credits:AddLabel(loadstring(base64decode("cGV0IGxpbWl0OiAyMDAvd2Vlaw=="))(), Theme.Sub)
+    Credits:AddLabel(loadstring(base64decode("a2V5YmluZDogcmlnaHQgY29udHJvbA=="))(), Color3.fromRGB(46, 204, 113))
+
+    pcall(function()
+        StarterGui:SetCore(loadstring(base64decode("U2VuZE5vdGlmaWNhdGlvbg=="))(), {
+            Title = loadstring(base64decode("R1pzY3JpcHQ="))(),
+            Text = isOwner and (loadstring(base64decode("d2VsY29tZSA="))() .. player.Name) or loadstring(base64decode("bG9hZGVk"))(),
+            Duration = 3
+        })
+    end)
+end)
+end
+
+ShowKeyUI(RunMainScript)
+end
+YwilGPaP(31yGX)
+end)(...)
